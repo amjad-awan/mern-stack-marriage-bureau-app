@@ -1,0 +1,9 @@
+.__nav-wrapper
+{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 0px;
+
+}

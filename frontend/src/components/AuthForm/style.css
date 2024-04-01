@@ -1,0 +1,8 @@
+.auth-form-wrapper{
+    width: 500px;
+}
+.__form-toggler
+{
+    cursor: pointer;
+    text-decoration: underline;
+}

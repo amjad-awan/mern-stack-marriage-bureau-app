@@ -1,0 +1,14 @@
+.__data-title
+{
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.__form-information-wrapper{
+    box-shadow:rgba(0, 0, 0, 0.1) 0px 1px 3px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+
+}
