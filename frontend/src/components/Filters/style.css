@@ -1,0 +1,9 @@
+.filter-wrapper
+{
+    margin-bottom: 50px;
+}
+
+.radio-btns{
+    display: flex;
+    gap: 30px;
+}

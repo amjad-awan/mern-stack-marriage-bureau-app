@@ -1,9 +1,20 @@
 import React, { useRef, useState } from "react";
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import "./style.css";
-import { addGroom } from "../../ServerRequests/grromRequest";
+import { addGroom } from "../../ServerRequests/groomRequest";
 import { toast } from "react-toastify";
+import { Sects, majorCastes, majorCountries, pakistanCities } from "../../constants/data";
 const AddNewForm = () => {
+  const [requirements, setRequirements] = useState({
+    requiredAge: "",
+    requiredHeight: "",
+    requiredCity: "",
+    requiredCast: "",
+    requiredQualification: "",
+    requiredSect: "",
+  });
+  const [requirementsErrors, setRequirementsErrors] = useState({});
+
   const [formData, setFormData] = useState({
     gender: "",
     name: "",
@@ -30,8 +41,12 @@ const AddNewForm = () => {
     sisters: "",
     marriedBrothers: "",
     marriedSisters: "",
+    filePhoto: "",
   });
   const [formErrors, setFormErrors] = useState({});
+
+  console.log("formData", formData);
+  console.log("requirementsErrors", requirementsErrors);
 
   console.log("formErrors", formErrors);
 
@@ -42,14 +57,15 @@ const AddNewForm = () => {
       [name]: value,
     }));
     setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: "", // Set the error message for the field to an empty string
-      }));
+      ...prevErrors,
+      [name]: "", // Set the error message for the field to an empty string
+    }));
   };
-
+  const handlePhotoChange = (e) => {
+    setFormData({ ...formData, filePhoto: e.target.files[0] });
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const {
         qualification,
@@ -62,33 +78,82 @@ const AddNewForm = () => {
         sisters,
         marriedBrothers,
         marriedSisters,
+        filePhoto,
         ...rest
       } = formData;
-      console.log("rest", rest);
-      const errors = validateForm(rest);
-      if (Object.keys(errors).length === 0) {
-        const res = await addGroom("groom/add-groom", formData);
+      const errors = validateForm({ ...rest });
+      console.log(errors)
+
+      // const requirementsSrrors = validateForm(requirements);
+      // console.log(requirementsSrrors)
+      if (
+        Object.keys(errors).length === 0
+      ) {
+        const data = { ...formData, ...requirements }
+        const formDataToSend = new FormData();
+        console.log("data94", data)
+        formDataToSend.append("photo", data.filePhoto); // Append the photo data
+        formDataToSend.append("gender", data.gender); // Append other fields
+        formDataToSend.append("name", data.name);
+        formDataToSend.append("age", data.age);
+        formDataToSend.append("martialStatus", data.martialStatus);
+        formDataToSend.append("phoneNumber", data.phoneNumber);
+        formDataToSend.append("height", data.height);
+        formDataToSend.append("qualification", data.qualification);
+        formDataToSend.append("collegeUniversity", data.collegeUniversity);
+        formDataToSend.append("job", data.job);
+        formDataToSend.append("income", data.income);
+        formDataToSend.append("religion", data.religion);
+        formDataToSend.append("sect", data.sect);
+        formDataToSend.append("cast", data.cast);
+        formDataToSend.append("home", data.home);
+        formDataToSend.append("size", data.size);
+        formDataToSend.append("city", data.city);
+        formDataToSend.append("address", data.address);
+        formDataToSend.append("migration", data.migration);
+        formDataToSend.append("nationality", data.nationality);
+        formDataToSend.append("fatherOccupation", data.fatherOccupation);
+        formDataToSend.append("motherOccupation", data.motherOccupation);
+        formDataToSend.append("brothers", data.brothers);
+        formDataToSend.append("sisters", data.sisters);
+        formDataToSend.append("marriedBrothers", data.marriedBrothers);
+        formDataToSend.append("marriedSisters", data.marriedSisters);
+
+        // Append requirements fields
+        formDataToSend.append("requiredAge", data.requiredAge);
+        formDataToSend.append("requiredHeight", data.requiredHeight);
+        formDataToSend.append("requiredCity", data.requiredCity);
+        formDataToSend.append("requiredCast", data.requiredCast);
+        formDataToSend.append("requiredQualification", data.requiredQualification);
+        formDataToSend.append("requiredSect", data.requiredSect);
+
+        console.log("formDataToSend", formDataToSend)
+        const res = await addGroom("groom/add-groom",
+          formDataToSend,
+
+        );
         if (res && res.data && res.data.success) {
           toast.success("Groom is added successfully!");
         }
       } else {
         setFormErrors(errors);
+        // setRequirementsErrors(requirementsSrrors);
         console.log("must filled required fields");
-
         toast.error("Fill out all required fields");
       }
     } catch (error) {
       console.log("error while adding groom", error);
-      toast.error("oops!, There ir error while adding groom");
+      toast.error("oops!, There is error while adding groom");
     }
   };
+
   const validateForm = (data) => {
+    console.log("data", data)
     let errors = {};
     Object.keys(data).forEach((key) => {
       if (data[key].trim() === "") {
-        errors[key] = `${
-          key.charAt(0).toUpperCase() + key.slice(1)
-        } is required`;
+        errors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)
+          } is required`;
       }
     });
     return errors;
@@ -129,6 +194,11 @@ const AddNewForm = () => {
             {formErrors.gender && (
               <div className="text-danger">{formErrors.gender}</div>
             )}
+          </FormGroup>
+        </Col>
+        <Col sm={12}>
+          <FormGroup block>
+            <input type="file" name="filePhoto" onChange={handlePhotoChange} />
           </FormGroup>
         </Col>
         <Col md={6}>
@@ -327,13 +397,16 @@ const AddNewForm = () => {
               value={formData.sect}
               onChange={handleChange}
             >
-              <option>Sunni </option>
-              <option>Brelvi</option>
-              <option>Deobandi</option>
-              <option>Shia </option>
-              <option>Ahle-e-hadees </option>
 
-              <option>other </option>
+
+              {
+                Sects.map((sect, index) => {
+                  return <option key={index} value={sect}>{sect}</option>
+
+                })
+              }
+
+
             </Input>
             {formErrors.sect && (
               <div className="text-danger">{formErrors.sect}</div>
@@ -347,10 +420,17 @@ const AddNewForm = () => {
               id="Cast"
               name="cast"
               placeholder="Enter Cast..."
-              type="text"
+              type="select"
               value={formData.cast}
               onChange={handleChange}
-            />
+            >
+
+              {majorCastes.map((cast, index) => (
+                <option key={index} value={cast}>
+                  {cast}
+
+                </option>))}
+            </Input>
             {formErrors.cast && (
               <div className="text-danger">{formErrors.cast}</div>
             )}
@@ -417,10 +497,17 @@ const AddNewForm = () => {
               id="City"
               name="city"
               placeholder="Enter City..."
-              type="text"
+              type="select"
               value={formData.city}
               onChange={handleChange}
-            />
+            >
+
+              {pakistanCities.map((city, index) => (
+                <option key={index} value={city}>
+                  {city}
+
+                </option>))}
+            </Input>
             {formErrors.city && (
               <div className="text-danger">{formErrors.city}</div>
             )}
@@ -471,10 +558,18 @@ const AddNewForm = () => {
               id="Nationality"
               name="nationality"
               placeholder="Enter Nationality..."
-              type="text"
+              type="select"
               value={formData.nationality}
               onChange={handleChange}
-            />
+            >
+                 <option value="">Select Nationality</option>
+    {majorCountries.map((city, index) => (
+      <option key={index} value={city}>
+        {city}
+      </option>
+    ))}
+              {/* Add more cities as needed */}
+            </Input>
             {formErrors.nationality && (
               <div className="text-danger">{formErrors.nationality}</div>
             )}
@@ -573,7 +668,203 @@ const AddNewForm = () => {
           </FormGroup>
         </Col>
       </Row>
+      <Row className="__form-information-wrapper">
+        <Col sm={12}>
+          <Label className="__data-title"> Looking for </Label>
+        </Col>
+        <Col sm={6}>
+          <FormGroup>
+            <Label for="requiredAge">Age</Label>
+            <Input
+              type="number"
+              id="requiredAge"
+              name="requiredAge"
+              value={requirements.requiredAge}
+              onChange={(a) => {
+                setRequirements({
+                  ...requirements,
+                  requiredAge: a.target.value,
+                });
+                setRequirementsErrors((prevErrors) => ({
+                  ...prevErrors,
+                  requiredAge: "", // Set the error message for the field to an empty string
+                }));
+              }}
+            />
+            {requirementsErrors.requiredAge && (
+              <div className="text-danger">
+                {requirementsErrors.requiredAge}
+              </div>
+            )}
+          </FormGroup>
+        </Col>
+        <Col sm={6}>
+          <FormGroup>
+            <Label for="requiredHeight">Height</Label>
+            <Input
+              type="number"
+              id="requiredHeight"
+              name="requiredHeight"
+              value={requirements.requiredHeight}
+              onChange={(a) => {
+                setRequirements({
+                  ...requirements,
+                  requiredHeight: a.target.value,
+                });
 
+                setRequirementsErrors((prevErrors) => ({
+                  ...prevErrors,
+                  requiredHeight: "", // Set the error message for the field to an empty string
+                }));
+              }}
+            />
+
+            {requirementsErrors.requiredHeight && (
+              <div className="text-danger">
+                {requirementsErrors.requiredHeight}
+              </div>
+            )}
+          </FormGroup>
+        </Col>
+        <Col md={6}>
+          <FormGroup>
+            <Label for="city">city</Label>
+            <Input
+              type="select"
+              id="requiredCity"
+              name="requiredCity"
+              value={requirements.requiredCity}
+              onChange={(a) => {
+                setRequirements({
+                  ...requirements,
+                  requiredCity: a.target.value,
+                });
+                setRequirementsErrors((prevErrors) => ({
+                  ...prevErrors,
+                  requiredCity: "", // Set the error message for the field to an empty string
+                }));
+              }}
+            >
+
+              {majorCountries.map((city, index) => (
+                <option key={index} value={city}>
+                  {city}
+
+                </option>))}
+            </Input>
+
+
+            {requirementsErrors.requiredCity && (
+              <div className="text-danger">
+                {requirementsErrors.requiredCity}
+              </div>
+            )}
+          </FormGroup>
+        </Col>
+        <Col md={6}>
+          <FormGroup>
+            <Label for="requiredQualfication">Qualfication</Label>
+            <Input
+              type="select"
+              id="requiredQualification"
+              name="requiredQualification"
+              value={requirements.requiredQualification}
+              onChange={(a) => {
+                setRequirements({
+                  ...requirements,
+                  requiredQualification: a.target.value,
+                });
+                setRequirementsErrors((prevErrors) => ({
+                  ...prevErrors,
+                  requiredQualification: "", // Set the error message for the field to an empty string
+                }));
+              }}
+            >
+              <option>Bachelor </option>
+              <option>MSC</option>
+              <option>PHD</option>
+              <option>Bachelor </option>
+              <option>Metric</option>
+              <option>Middle</option>
+            </Input>
+            {requirementsErrors.requiredQualification && (
+              <div className="text-danger">
+                {requirementsErrors.requiredQualification}
+              </div>
+            )}
+          </FormGroup>
+        </Col>{" "}
+        <Col md={6}>
+          <FormGroup>
+            <Label for="requiredSect">Sect</Label>
+            <Input
+              type="select"
+              id="requiredSect"
+              name="requiredSect"
+              value={requirements.requiredSect}
+              onChange={(a) => {
+                setRequirements({
+                  ...requirements,
+                  requiredSect: a.target.value,
+                });
+
+                setRequirementsErrors((prevErrors) => ({
+                  ...prevErrors,
+                  requiredSect: "", // Set the error message for the field to an empty string
+                }));
+              }}
+            >
+              {
+                Sects.map((sect, index) => {
+                  return <option key={index} value={sect}>{sect}</option>
+
+                })
+              }
+            </Input>
+            {requirementsErrors.requiredSect && (
+              <div className="text-danger">
+                {requirementsErrors.requiredSect}
+              </div>
+            )}
+          </FormGroup>
+        </Col>
+
+        <Col md={6}>
+          <FormGroup>
+            <Label for="requiredCast">Cast</Label>
+            <Input
+              type="select"
+              id="requiredCast"
+              name="requiredCast"
+              value={requirements.requiredCast}
+              onChange={(a) => {
+                setRequirements({
+                  ...requirements,
+                  requiredCast: a.target.value,
+                });
+                setRequirementsErrors((prevErrors) => ({
+                  ...prevErrors,
+                  requiredCast: "", // Set the error message for the field to an empty string
+                }));
+              }}
+            >
+
+              {majorCastes.map((cast, index) => (
+                <option key={index} value={cast}>
+                  {cast}
+
+                </option>))}
+            </Input>
+            {requirementsErrors.requiredCast && (
+              <div className="text-danger">
+                {requirementsErrors.requiredCast}
+              </div>
+            )}
+          </FormGroup>
+        </Col>
+
+
+      </Row>
       <Button type="submit" color="primary">
         Submit
       </Button>

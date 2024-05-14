@@ -7,6 +7,7 @@ const groomSchema = new mongoose.Schema({
   martialStatus: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   height: { type: Number, required: true },
+
   qualification: { type: String },
   collegeUniversity: { type: String },
   job: { type: String, },
@@ -26,7 +27,17 @@ const groomSchema = new mongoose.Schema({
   sisters: { type: Number },
   marriedBrothers: { type: Number },
   marriedSisters: { type: Number  },
+  requirements:{
+    requiredAge:{ type: Number },
+    requiredHeight:{ type: Number },
+    requiredCity:{ type: String, required: true },
+    requiredCast:{ type: String, required: true },
+    requiredQualification:{ type: String, required: true },
+    requiredSect:{ type: String, required: true },
+  },
+  photo: { data: Buffer, contentType: String } // Photo field to store image data and content type
 });
+
 
 // Create a model based on the schema
 export default mongoose.model("groom", groomSchema);

@@ -1,46 +1,42 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-
-const app = express();
 import dotenv from "dotenv";
 import userRoute from "./routes/userRoutes.js";
 import groomRoute from "./routes/groomRoutes.js";
-
-// import blogRoute from "./routes/blogRouter.js";
 import connectDB from "./db.js";
-// import * as path from 'path'
+import  formidableMiddleware from 'express-formidable'
 
-
-
+// Load environment variables from .env file
 dotenv.config();
-connectDB();
-const PORT = process.env.PORT || 5000;
 
-// middelwares
+// Connect to the database
+connectDB();
+
+// Initialize Express app
+const app = express();
+
+// Set up middleware
 app.use(express.json());
 app.use(cors());
-// parse application/x-www-form-urlencode
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(formidableMiddleware());
 
 
-// app.use(express.static(path.join(__dirname, "./client/build")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "./client/build/index.html"));
-// });
-//routes
+// Define routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/groom", groomRoute);
 
+// Define a default route
+app.get("/", (req, res) => {
+  res.send("Express API is running");
+});
 
-// app.use("/api/v1/blog", blogRoute);
+// Set the port to listen on
+const PORT = process.env.PORT || 5000;
 
-app.use("/",(req, res)=>{
-  res.send("express api is here ")
-})
-
+// Start the server
 app.listen(PORT, () => {
-  console.log(`App is running at ${PORT}`);
+  console.log(`App is running at http://localhost:${PORT}`);
 });

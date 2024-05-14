@@ -4,6 +4,15 @@
     justify-content: flex-start;
     align-items: center;
     gap: 30px;
-    padding: 20px 0px;
+    padding: 10px 0px;
+    margin-bottom: 20px;
 
+}
+.search-bar{
+    margin-bottom: 0 !important;
+    flex: 1;
+}
+.search-bar input::placeholder{
+  color: rgb(176, 178, 179);
+  font-size: 18px;
 }
