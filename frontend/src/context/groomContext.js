@@ -5,15 +5,15 @@ const GroomContext = createContext();
 
 const GroomProvider = ({ children }) => {
   const [grooms, setGrooms] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [page, setPage]= useState(1)
-  console.log('page: grooms', page,grooms);
-  useEffect(()=>{
-    setParams({
-      ...params, page:page
-    })
+  console.log('page: grooms', page);
+  // useEffect(()=>{
+  //   setParams({
+  //     ...params, page:page
+  //   })
 
-  },[page])
+  // },[page])
 
   const [totalPages, setTotalpages]= useState(null)
   const [params, setParams] = useState({
@@ -29,25 +29,9 @@ const GroomProvider = ({ children }) => {
     gender:"",
     nationality: ""
   });
-  console.log(params)
+  console.log("32",params)
 
-  const fetchGrooms = async () => {
-    try {
-      setLoading(true);
-      const response = await getGrooms('groom/get-grooms', params);
-      console.log("response",response)
-      setGrooms(response.data.data);
-      setTotalpages(response.data.totalGrooms)
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching grooms:', error);
-      setLoading(false);
-    }
-  };
 
-  useEffect(() => {
-    fetchGrooms();
-  }, [params]); // Refetch grooms when params change
 
   return (
     <GroomContext.Provider
@@ -56,8 +40,11 @@ const GroomProvider = ({ children }) => {
         setParams,
         params,
         setPage,
+        setGrooms,
         page,
         totalPages,
+        setLoading,
+        setTotalpages,
         loading
       }}
     >

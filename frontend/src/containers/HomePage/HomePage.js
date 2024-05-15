@@ -1,22 +1,88 @@
 import Layout from "../../components/Layout/Layout";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import axios from "axios";
 import { getGrooms } from "../../ServerRequests/groomRequest";
 import { useGrooms } from "../../context/groomContext";
 import GroomCard from "../../components/GroomCard/GroomCard";
-import { Button, Col, FormGroup, Input, Row } from "reactstrap";
+import {
+  Button,
+  Col,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  FormGroup,
+  Input,
+  Row,
+  Spinner,
+} from "reactstrap";
 import PaginationCom from "../../components/Pagination/Pagination";
 import Filters from "../../components/Filters/Filters";
+import { toast } from "react-toastify";
 const HomePage = () => {
+  const {
+    grooms,
+    setGrooms,
+    setTotalpages,
+    params,
+    loading,
+    setLoading,
+    setParams,
+  } = useGrooms();
+  const [showFilters, setShowFilters] = useState(false);
 
-  const { grooms, loading, setParams } = useGrooms()
-  const [showFilters, setShowFilters] = useState(false)
+  let id;
+
+  console.log("grooms", grooms);
+  const cleareFilter = () => {
+    setParams({
+      page: 1,
+      limit: 10,
+      cast: "",
+      search: "",
+      height: "",
+      qualification: "",
+      martialStatus: "",
+      sect: "",
+      city: "",
+      gender: "",
+      nationality: "",
+    });
+    setShowFilters(false);
+  };
+  const fetchGrooms = async () => {
+    try {
+      setLoading(false);
+
+      const response = await getGrooms("groom/get-grooms", params);
+      console.log("response", response);
+      setGrooms(response.data.data);
+      setTotalpages(response.data.totalGrooms);
+      setLoading(true);
+    } catch (error) {
+      console.error("Error fetching grooms:", error);
+      setLoading(true);
+    }
+  };
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    fetchGrooms();
+  }, [params]); // Refetch grooms when params change
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
 
   return (
     <Layout>
-
-      <div style={{ display: "flex", alignItems: "center", marginBottom: "30px", gap: "10px", justifyContent: "flex-end" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          marginBottom: "30px",
+          gap: "10px",
+          justifyContent: "flex-end",
+        }}
+      >
         <FormGroup className="search-bar mt-3">
           <Input
             id="exampleName"
@@ -24,42 +90,58 @@ const HomePage = () => {
             placeholder="search with name, city, sect, mobile number, cast"
             type="text"
             className="search-on-desktop"
-            onChange={(e) => setParams((prev) => ({ ...prev, search: e.target.value }))}
-
+            onChange={(e) =>
+              setParams((prev) => ({ ...prev, search: e.target.value }))
+            }
           />
-
         </FormGroup>
-        <Button color="primary" className="mt-3 mb-3" style={{ height: "38px" }} onClick={() => setShowFilters(!showFilters)}>
-          {
-            showFilters ? "Hide " : "Show "
-          }
-          Filters
-        </Button>
-
+        {/* <Button color="primary" className="mt-3 mb-3" style={{ height: "38px" }} onClick={() => setShowFilters(!showFilters)}>
+       
+          showFilters ? "Hide " : "Show "
+        
+        Filters 
+        </Button> */}
+        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+          <DropdownToggle caret color="primary">
+            Filters
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem onClick={() => setShowFilters(!showFilters)}>
+              {" "}
+              {showFilters ? "Hide " : "Show "} Filters
+            </DropdownItem>
+            <DropdownItem onClick={cleareFilter}>Clear Filters</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
-
-      {
-        showFilters && <Filters />
-      }
-
+      {showFilters && <Filters />}
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <PaginationCom />
       </div>
-      <Row >
-        {
-          loading && <p style={{ fontWeight: "600", fontSize: "22px" }} >Loading...</p>
-        }
-        {
-          grooms.length > 0 ? grooms.map((data, index) => {
-            return <Col sm={12} md={6} lg={3} > <GroomCard key={index} data={data} /></Col>
-          }) : <p>No data found</p>
-
-        }
-
+      {!loading && (
+        <div
+          style={{
+            display: "flex",
+            padding: "30px 0px",
+            justifyContent: "center",
+          }}
+        >
+          <Spinner color="primary mx-auto" size="sm"></Spinner>
+        </div>
+      )}
+      <Row>
+        {grooms.length > 0
+          ? grooms.map((data, index) => {
+              return (
+                <Col sm={12} md={6} lg={3} key={index}>
+                  <GroomCard  data={data} />
+                </Col>
+              );
+            })
+          : loading && <p>No data found</p>}
       </Row>
-
     </Layout>
-  )
+  );
 };
 
-export default HomePage;
+export default memo(HomePage);

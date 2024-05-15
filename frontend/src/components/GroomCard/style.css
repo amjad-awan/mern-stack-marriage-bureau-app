@@ -1,11 +1,31 @@
 .looking-for
 {
-    font-size: 30px;
-    font-weight: 600;
-    font-style: italic;
+    font-size: 20px;
+    font-weight: 500;
+    /* font-style: italic; */
     margin-top: 20px;
 }
-
+.text-wrapper{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 17px !important;
+}
+.info{
+    /* color: rgb(228, 224, 219); */
+    font-size: 14px !important;
+    font-weight: 400 !important;
+}
 .looking-for-btn{
     margin-top: 20px;
+}
+.look-for{
+    color: rgb(19, 130, 226);
+    margin-right: 30px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.groom-img{
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
 }

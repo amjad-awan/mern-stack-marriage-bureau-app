@@ -13,14 +13,15 @@ export const addGroom = async (req, res) => {
       ...groomData
     } = req.fields;
     const { photo } = req.files;
-    console.log("req body 7777",{ 
-       requiredAge,
+    console.log("req body 7777", {
+      requiredAge,
       requiredQualification,
       requiredSect,
       requiredHeight,
       requiredCity,
       requiredCast,
-      ...groomData});
+      ...groomData,
+    });
     const recordExists = await groomModel.findOne({
       phoneNumber: groomData.phoneNumber,
     });
@@ -116,9 +117,31 @@ export const addGroom = async (req, res) => {
 //   }
 // };
 
+
 // export const getGrooms = async (req, res) => {
 //   try {
+export const getSingleGroom = async (req, res) => {
+  try {
+    // Extract query parameters
+    const { id } = req.params;
 
+    const grooms = await groomModel.findOne({_id:id});
+
+    res.status(200).json({
+      success: true,
+      error: false,
+      data: grooms,
+      message: "Groom fetched",
+    });
+  } catch (error) {
+    console.error("Error fetching grooms:", error);
+    res.status(500).json({
+      success: false,
+      error: true,
+      message: "There was an error while fetching grooms",
+    });
+  }
+};
 export const getGrooms = async (req, res) => {
   try {
     // Extract query parameters
@@ -132,6 +155,7 @@ export const getGrooms = async (req, res) => {
       martialStatus,
       sect,
       city,
+      cast,
       nationality,
     } = req.query;
     const filter = {};
@@ -156,6 +180,7 @@ export const getGrooms = async (req, res) => {
     if (sect) filter.sect = sect;
     if (city) filter.city = city;
     if (nationality) filter.nationality = nationality;
+    if (cast) filter.cast = cast;
 
     // Build pagination options
     const options = {
@@ -169,7 +194,6 @@ export const getGrooms = async (req, res) => {
     // Fetch total count of grooms matching the filter
     const totalGroomsCount = await groomModel.countDocuments();
 
-  
     // Respond with the fetched grooms and pagination metadata
     res.status(200).json({
       success: true,
@@ -180,7 +204,7 @@ export const getGrooms = async (req, res) => {
       // totalPages: Math.ceil(totalGroomsCount / parseInt(limit)),
       totalGrooms: totalGroomsCount,
       message: "Grooms fetched",
-    }); 
+    });
   } catch (error) {
     console.error("Error fetching grooms:", error);
     res.status(500).json({

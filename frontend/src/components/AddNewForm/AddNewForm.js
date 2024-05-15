@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
-import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import { Button, Card, Col, Form, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
 import "./style.css";
 import { addGroom } from "../../ServerRequests/groomRequest";
 import { toast } from "react-toastify";
 import { Sects, majorCastes, majorCountries, pakistanCities } from "../../constants/data";
+import { FiEdit } from "react-icons/fi";
+
 const AddNewForm = () => {
   const [requirements, setRequirements] = useState({
     requiredAge: "",
@@ -14,7 +16,7 @@ const AddNewForm = () => {
     requiredSect: "",
   });
   const [requirementsErrors, setRequirementsErrors] = useState({});
-
+const [isLoading, setIsLoading]= useState(false)
   const [formData, setFormData] = useState({
     gender: "",
     name: "",
@@ -45,10 +47,10 @@ const AddNewForm = () => {
   });
   const [formErrors, setFormErrors] = useState({});
 
-  console.log("formData", formData);
-  console.log("requirementsErrors", requirementsErrors);
 
-  console.log("formErrors", formErrors);
+  console.log("formData", formData)
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,9 +65,14 @@ const AddNewForm = () => {
   };
   const handlePhotoChange = (e) => {
     setFormData({ ...formData, filePhoto: e.target.files[0] });
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      filePhoto: "", // Set the error message for the field to an empty string
+    }));
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
     try {
       const {
         qualification,
@@ -78,16 +85,15 @@ const AddNewForm = () => {
         sisters,
         marriedBrothers,
         marriedSisters,
-        filePhoto,
         ...rest
       } = formData;
       const errors = validateForm({ ...rest });
       console.log(errors)
 
-      // const requirementsSrrors = validateForm(requirements);
+      const requirementsSrrors = validateForm(requirements);
       // console.log(requirementsSrrors)
       if (
-        Object.keys(errors).length === 0
+        Object.keys(errors).length === 0 && Object.keys(requirementsSrrors).length === 0
       ) {
         const data = { ...formData, ...requirements }
         const formDataToSend = new FormData();
@@ -127,23 +133,28 @@ const AddNewForm = () => {
         formDataToSend.append("requiredQualification", data.requiredQualification);
         formDataToSend.append("requiredSect", data.requiredSect);
 
-        console.log("formDataToSend", formDataToSend)
         const res = await addGroom("groom/add-groom",
           formDataToSend,
 
         );
         if (res && res.data && res.data.success) {
           toast.success("Groom is added successfully!");
+          setIsLoading(false)
+
         }
       } else {
         setFormErrors(errors);
-        // setRequirementsErrors(requirementsSrrors);
+        setRequirementsErrors(requirementsSrrors);
         console.log("must filled required fields");
         toast.error("Fill out all required fields");
+        setIsLoading(false)
+
       }
     } catch (error) {
       console.log("error while adding groom", error);
       toast.error("oops!, There is error while adding groom");
+      setIsLoading(false)
+
     }
   };
 
@@ -196,11 +207,33 @@ const AddNewForm = () => {
             )}
           </FormGroup>
         </Col>
-        <Col sm={12}>
-          <FormGroup block>
-            <input type="file" name="filePhoto" onChange={handlePhotoChange} />
+        <Col sm={12} md={6}>
+
+          <FormGroup block >
+            <Label htmlFor="pic" className="select-pic">{ !formErrors.filePhoto && "Select picture"}
+              {
+              formData.filePhoto && <span>{formData.filePhoto.name}</span>
+              }
+                {formErrors.filePhoto && (
+              <div className="text-danger">{formErrors.filePhoto}</div>
+            )}
+
+            </Label>
+            <input type="file" style={{ display: "none" }} accept=".png,.jpg,.jpeg" id="pic" name="filePhoto" onChange={handlePhotoChange} />
           </FormGroup>
+        
+          {
+            formData.filePhoto &&
+            <Card className="imag-wrapper">
+              <Label htmlFor="pic" className="edit-btn"><FiEdit />
+</Label>
+              <img className="" src={URL.createObjectURL(formData.filePhoto)} />
+
+            </Card>}
+
+
         </Col>
+
         <Col md={6}>
           <FormGroup>
             <Label for="exampleName">Name</Label>
@@ -256,6 +289,7 @@ const AddNewForm = () => {
               value={formData.martialStatus}
               onChange={handleChange}
             >
+              <option>Select martial status</option>
               <option value="single">Single</option>
               <option value="married">Married</option>
               <option value="divorce">Divorce</option>
@@ -295,6 +329,7 @@ const AddNewForm = () => {
               value={formData.qualification}
               onChange={handleChange}
             >
+              <option> Slecect Qualfication  </option>
               <option>Bachelor </option>
               <option>MSC</option>
               <option>PHD</option>
@@ -333,6 +368,8 @@ const AddNewForm = () => {
               value={formData.job}
               onChange={handleChange}
             >
+              <option>Select Ouccupation </option>
+
               <option>Own business </option>
               <option>Govt job</option>
               <option>Private job</option>
@@ -373,6 +410,8 @@ const AddNewForm = () => {
               value={formData.religion}
               onChange={handleChange}
             >
+              <option>Select Religion </option>
+
               <option>Islam </option>
               <option>Hindu</option>
               <option>Sikh</option>
@@ -398,6 +437,7 @@ const AddNewForm = () => {
               onChange={handleChange}
             >
 
+              <option>Select Sect </option>
 
               {
                 Sects.map((sect, index) => {
@@ -424,6 +464,7 @@ const AddNewForm = () => {
               value={formData.cast}
               onChange={handleChange}
             >
+              <option>Select Cast </option>
 
               {majorCastes.map((cast, index) => (
                 <option key={index} value={cast}>
@@ -501,6 +542,7 @@ const AddNewForm = () => {
               value={formData.city}
               onChange={handleChange}
             >
+              <option>Select City </option>
 
               {pakistanCities.map((city, index) => (
                 <option key={index} value={city}>
@@ -538,6 +580,8 @@ const AddNewForm = () => {
               value={formData.migration}
               onChange={handleChange}
             >
+              <option>Select Migration </option>
+
               <option value="Jalandhar">Jalandhar</option>
               <option value="Amritsir">Amritsar</option>
               <option value="Ludhiana">Ludhiana</option>
@@ -562,12 +606,12 @@ const AddNewForm = () => {
               value={formData.nationality}
               onChange={handleChange}
             >
-                 <option value="">Select Nationality</option>
-    {majorCountries.map((city, index) => (
-      <option key={index} value={city}>
-        {city}
-      </option>
-    ))}
+              <option value="">Select Nationality</option>
+              {majorCountries.map((city, index) => (
+                <option key={index} value={city}>
+                  {city}
+                </option>
+              ))}
               {/* Add more cities as needed */}
             </Input>
             {formErrors.nationality && (
@@ -583,7 +627,7 @@ const AddNewForm = () => {
         </Col>
         <Col sm={6}>
           <FormGroup>
-            <Label for="Occupations">Father's Occupations</Label>
+            <Label for="Occupations">Father's Occupation</Label>
             <Input
               type="select"
               id="Occupations"
@@ -591,6 +635,8 @@ const AddNewForm = () => {
               value={formData.fatherOccupation}
               onChange={handleChange}
             >
+              <option>Select Father's Occupation </option>
+
               <option>Own business </option>
               <option>Govt job</option>
               <option>Private job</option>
@@ -608,6 +654,8 @@ const AddNewForm = () => {
               value={formData.motherOccupation}
               onChange={handleChange}
             >
+              <option>Select Mother's Occupation </option>
+
               <option>Own business </option>
               <option>Govt job</option>
               <option>Private job</option>
@@ -745,6 +793,7 @@ const AddNewForm = () => {
                 }));
               }}
             >
+              <option>Select City </option>
 
               {majorCountries.map((city, index) => (
                 <option key={index} value={city}>
@@ -780,6 +829,8 @@ const AddNewForm = () => {
                 }));
               }}
             >
+              <option>Select Qualfication </option>
+
               <option>Bachelor </option>
               <option>MSC</option>
               <option>PHD</option>
@@ -814,6 +865,8 @@ const AddNewForm = () => {
                 }));
               }}
             >
+              <option>Select Sect </option>
+
               {
                 Sects.map((sect, index) => {
                   return <option key={index} value={sect}>{sect}</option>
@@ -848,6 +901,7 @@ const AddNewForm = () => {
                 }));
               }}
             >
+              <option>Select Cast </option>
 
               {majorCastes.map((cast, index) => (
                 <option key={index} value={cast}>
@@ -865,9 +919,23 @@ const AddNewForm = () => {
 
 
       </Row>
-      <Button type="submit" color="primary">
+      {/* <Button type="submit" color="primary">
         Submit
-      </Button>
+      </Button> */}
+
+      <Button
+  color="primary"
+  disabled
+  type="submit"
+>
+    
+  <Spinner size="sm">
+    Loading...
+  </Spinner>
+  <span>
+   Loading  
+  </span>
+</Button>
     </Form>
   );
 };

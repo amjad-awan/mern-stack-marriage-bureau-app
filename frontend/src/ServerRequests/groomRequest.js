@@ -11,3 +11,5 @@ export const getGrooms = (url, params) =>
   API.get(url, {
     params: params,
   });
+
+  export const getSingleGroom = (url) =>API.get(url);

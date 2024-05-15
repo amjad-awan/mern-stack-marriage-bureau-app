@@ -11,7 +11,10 @@ const NavBar = () => {
     <div className="__nav-wrapper">
       <div className="__nav-wrapper-logo">Marriage</div>
       <div className="_nav_wrapper-item">
-        <Button color="primary" onClick={()=>navigate("/")}>Home</Button>
+        <Link to="/" color="primary">Home</Link>
+        <Link to='/zubair-bhai-website-auth' color="primary" className="ms-4" >Login</Link>
+
+       
       </div>
          <div className="_nav_wrapper-item  ms-auto">
         <Button color="primary" onClick={()=>navigate("/add-new")}>Add new</Button>

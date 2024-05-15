@@ -1,0 +1,16 @@
+.single-groom-wrapper{
+    margin-top: 50px;
+    padding: 30px;
+}
+.img-wrapper
+{
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+}
+.img-wrapper img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, FormGroup, Input, Label, Row } from "reactstrap";
 import { useGrooms } from "../../context/groomContext";
-import { majorCastes, pakistanCities } from "../../constants/data";
+import { majorCastes, majorCountries, pakistanCities } from "../../constants/data";
 import "./style.css"
 const Filters = () => {
   const { params, setParams } = useGrooms();
@@ -62,10 +62,19 @@ const Filters = () => {
             <Input
               value={params.qualification}
               name="qualification"
-              type="text"
+              type="select"
               id="exampleQualification"
               onChange={handleInputChange}
-            />
+            >
+                <option>Select Qualfication </option>
+             <option>Bachelor </option>
+              <option>MSC</option>
+              <option>PHD</option>
+              <option>Bachelor </option>
+              <option>Metric</option>
+              <option>Middle</option>
+
+              </Input>
           </FormGroup>
         </Col>
         <Col md={6} lg={3}>
@@ -112,12 +121,10 @@ const Filters = () => {
               onChange={handleInputChange}
             >
               <option value="">Select Nationality</option>
-              <option value="American">American</option>
-              <option value="British">British</option>
-              <option value="Canadian">Canadian</option>
-              {pakistanCities.map((city, index) => (
-                <option key={index} value={city}>
-                  {city}
+             
+              {majorCountries.map((country, index) => (
+                <option key={index} value={country}>
+                  {country}
                 </option>
               ))}
               {/* Add more nationalities as needed */}

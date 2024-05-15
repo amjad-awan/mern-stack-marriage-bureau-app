@@ -22,7 +22,6 @@ const AuthForm = () => {
   const navigate = useNavigate();
 
   const [isRegistering, setIsRegistering] = useState(true);
-  console.log("form", formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
