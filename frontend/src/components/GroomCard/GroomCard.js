@@ -15,10 +15,10 @@ const GroomCard = ({ data }) => {
   const [lookingFor, setLookingFor] = useState();
   console.log("lookingFor", lookingFor);
 
-  const base64String = Buffer.from(data.photo.data).toString("base64");
+  const base64String =data?.photo?.data?Buffer.from(data.photo.data).toString("base64"):"";
 
   // Construct the data URL for the image
-  const imageUrl = `data:${data.photo.contentType};base64,${base64String}`;
+  const imageUrl = data?.photo?.contentType?`data:${data.photo.contentType};base64,${base64String}`:"";
   return (
     <Card
       style={{
@@ -48,7 +48,7 @@ const GroomCard = ({ data }) => {
           Sect: <span className="info">{data.sect} </span>
         </CardSubtitle>
         <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Education: <span className="info">{data.qualification} </span>
+          Education: <span className="info">{data.qualification ?data.qualification:"Not mentioned"} </span>
         </CardSubtitle>
         {lookingFor === data._id && (
           <>

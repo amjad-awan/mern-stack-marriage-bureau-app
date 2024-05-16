@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 
-
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect("mongodb+srv://amjadmalikf53:hFyCiAaO5rKStR6d@cluster0.tbisklz.mongodb.net/marriage-app-fsd?retryWrites=true&w=majority&appName=Cluster0");

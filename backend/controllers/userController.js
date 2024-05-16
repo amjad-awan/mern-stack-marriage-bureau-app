@@ -1,10 +1,9 @@
 import userModel from "../models/userModel.js";
-import { createToken, doHashed } from "../utils.js";
+import { comparePass, createToken, doHashed } from "../utils.js";
 
 // create user
 export const userRegister = async (req, res) => {
   const { name, email, password } = req.body;
-
   try {
     switch (true) {
       case !name:
@@ -22,7 +21,6 @@ export const userRegister = async (req, res) => {
           success: false,
           message: "Password is required",
         });
-     
     }
 
     // check this email already exist
@@ -56,8 +54,6 @@ export const userRegister = async (req, res) => {
 // create user
 export const loginController = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body)
-
   try {
     switch (true) {
       case !email:
@@ -73,9 +69,17 @@ export const loginController = async (req, res) => {
     }
     // check this email already exist
     let isAccountExist = await userModel.findOne({ email });
-    const token = isAccountExist && (await createToken(isAccountExist._id));
-
     if (isAccountExist) {
+      const token = isAccountExist && (await createToken(isAccountExist._id));
+      const passOk = await comparePass(password,isAccountExist.password)
+      if(!passOk)
+        {
+          res.status(400).json({
+            success: false,
+            message: "password not matched",
+          });
+          return
+        }
       res.status(200).json({
         success: true,
         message: "user login successfully",

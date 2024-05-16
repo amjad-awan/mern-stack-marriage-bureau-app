@@ -24,7 +24,6 @@ export const majorCastes = [
     "Malik",
     "Mirza",
     "Mughal",
-    "Open Cast",
     "Piracha",
     "Qureshi",
     "Rajput",
@@ -34,5 +33,6 @@ export const majorCastes = [
     "Satti",
     "Sheikh",
     "Syed",
-    "Wattu"
+    "Wattu",
+    "Open Cast",
 ];

@@ -1,9 +1,24 @@
 import React, { useRef, useState } from "react";
-import { Button, Card, Col, Form, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Row,
+  Spinner,
+} from "reactstrap";
 import "./style.css";
 import { addGroom } from "../../ServerRequests/groomRequest";
 import { toast } from "react-toastify";
-import { Sects, majorCastes, majorCountries, pakistanCities } from "../../constants/data";
+import {
+  Sects,
+  majorCastes,
+  majorCountries,
+  pakistanCities,
+} from "../../constants/data";
 import { FiEdit } from "react-icons/fi";
 
 const AddNewForm = () => {
@@ -16,7 +31,8 @@ const AddNewForm = () => {
     requiredSect: "",
   });
   const [requirementsErrors, setRequirementsErrors] = useState({});
-const [isLoading, setIsLoading]= useState(false)
+  const [isNoPicture, setIsNoPicture]= useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     gender: "",
     name: "",
@@ -47,10 +63,7 @@ const [isLoading, setIsLoading]= useState(false)
   });
   const [formErrors, setFormErrors] = useState({});
 
-
-  console.log("formData", formData)
-
-
+  console.log("formData",formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,19 +73,16 @@ const [isLoading, setIsLoading]= useState(false)
     }));
     setFormErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: "", // Set the error message for the field to an empty string
+      [name]: "",
     }));
   };
   const handlePhotoChange = (e) => {
     setFormData({ ...formData, filePhoto: e.target.files[0] });
-    setFormErrors((prevErrors) => ({
-      ...prevErrors,
-      filePhoto: "", // Set the error message for the field to an empty string
-    }));
+    setIsNoPicture(false)
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const {
         qualification,
@@ -85,19 +95,23 @@ const [isLoading, setIsLoading]= useState(false)
         sisters,
         marriedBrothers,
         marriedSisters,
+        filePhoto,
         ...rest
       } = formData;
       const errors = validateForm({ ...rest });
-      console.log(errors)
-
+      console.log(errors);
+if(!formData.filePhoto){
+  setIsNoPicture(true)
+}
       const requirementsSrrors = validateForm(requirements);
       // console.log(requirementsSrrors)
       if (
-        Object.keys(errors).length === 0 && Object.keys(requirementsSrrors).length === 0
+        Object.keys(errors).length === 0 &&
+        Object.keys(requirementsSrrors).length === 0
       ) {
-        const data = { ...formData, ...requirements }
+        const data = { ...formData, ...requirements };
         const formDataToSend = new FormData();
-        console.log("data94", data)
+        console.log("data94", data);
         formDataToSend.append("photo", data.filePhoto); // Append the photo data
         formDataToSend.append("gender", data.gender); // Append other fields
         formDataToSend.append("name", data.name);
@@ -130,41 +144,39 @@ const [isLoading, setIsLoading]= useState(false)
         formDataToSend.append("requiredHeight", data.requiredHeight);
         formDataToSend.append("requiredCity", data.requiredCity);
         formDataToSend.append("requiredCast", data.requiredCast);
-        formDataToSend.append("requiredQualification", data.requiredQualification);
+        formDataToSend.append(
+          "requiredQualification",
+          data.requiredQualification
+        );
         formDataToSend.append("requiredSect", data.requiredSect);
 
-        const res = await addGroom("groom/add-groom",
-          formDataToSend,
-
-        );
+        const res = await addGroom("groom/add-groom", formDataToSend);
         if (res && res.data && res.data.success) {
           toast.success("Groom is added successfully!");
-          setIsLoading(false)
-
+          setIsLoading(false);
         }
       } else {
         setFormErrors(errors);
         setRequirementsErrors(requirementsSrrors);
         console.log("must filled required fields");
         toast.error("Fill out all required fields");
-        setIsLoading(false)
-
+        setIsLoading(false);
       }
     } catch (error) {
       console.log("error while adding groom", error);
       toast.error("oops!, There is error while adding groom");
-      setIsLoading(false)
-
+      setIsLoading(false);
     }
   };
 
   const validateForm = (data) => {
-    console.log("data", data)
+    console.log("data", data);
     let errors = {};
     Object.keys(data).forEach((key) => {
       if (data[key].trim() === "") {
-        errors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)
-          } is required`;
+        errors[key] = `${
+          key.charAt(0).toUpperCase() + key.slice(1)
+        } is required`;
       }
     });
     return errors;
@@ -208,30 +220,32 @@ const [isLoading, setIsLoading]= useState(false)
           </FormGroup>
         </Col>
         <Col sm={12} md={6}>
-
-          <FormGroup block >
-            <Label htmlFor="pic" className="select-pic">{ !formErrors.filePhoto && "Select picture"}
-              {
-              formData.filePhoto && <span>{formData.filePhoto.name}</span>
-              }
-                {formErrors.filePhoto && (
-              <div className="text-danger">{formErrors.filePhoto}</div>
-            )}
-
+          <FormGroup block>
+            <Label htmlFor="pic" className="select-pic">
+              {!formData.filePhoto.name && "Select picture"}
+              {formData.filePhoto.name && <span>{formData.filePhoto.name}</span>}
+              {isNoPicture && (
+                <div className="text-danger">Picture is required</div>
+              )}
             </Label>
-            <input type="file" style={{ display: "none" }} accept=".png,.jpg,.jpeg" id="pic" name="filePhoto" onChange={handlePhotoChange} />
+            <input
+              type="file"
+              style={{ display: "none" }}
+              accept=".png,.jpg,.jpeg"
+              id="pic"
+              name="filePhoto"
+              onChange={handlePhotoChange}
+            />
           </FormGroup>
-        
-          {
-            formData.filePhoto &&
+
+          {formData.filePhoto && (
             <Card className="imag-wrapper">
-              <Label htmlFor="pic" className="edit-btn"><FiEdit />
-</Label>
+              <Label htmlFor="pic" className="edit-btn">
+                <FiEdit />
+              </Label>
               <img className="" src={URL.createObjectURL(formData.filePhoto)} />
-
-            </Card>}
-
-
+            </Card>
+          )}
         </Col>
 
         <Col md={6}>
@@ -329,7 +343,7 @@ const [isLoading, setIsLoading]= useState(false)
               value={formData.qualification}
               onChange={handleChange}
             >
-              <option> Slecect Qualfication  </option>
+              <option> Select Qualfication </option>
               <option>Bachelor </option>
               <option>MSC</option>
               <option>PHD</option>
@@ -436,17 +450,15 @@ const [isLoading, setIsLoading]= useState(false)
               value={formData.sect}
               onChange={handleChange}
             >
-
               <option>Select Sect </option>
 
-              {
-                Sects.map((sect, index) => {
-                  return <option key={index} value={sect}>{sect}</option>
-
-                })
-              }
-
-
+              {Sects.map((sect, index) => {
+                return (
+                  <option key={index} value={sect}>
+                    {sect}
+                  </option>
+                );
+              })}
             </Input>
             {formErrors.sect && (
               <div className="text-danger">{formErrors.sect}</div>
@@ -469,8 +481,8 @@ const [isLoading, setIsLoading]= useState(false)
               {majorCastes.map((cast, index) => (
                 <option key={index} value={cast}>
                   {cast}
-
-                </option>))}
+                </option>
+              ))}
             </Input>
             {formErrors.cast && (
               <div className="text-danger">{formErrors.cast}</div>
@@ -547,8 +559,8 @@ const [isLoading, setIsLoading]= useState(false)
               {pakistanCities.map((city, index) => (
                 <option key={index} value={city}>
                   {city}
-
-                </option>))}
+                </option>
+              ))}
             </Input>
             {formErrors.city && (
               <div className="text-danger">{formErrors.city}</div>
@@ -795,13 +807,12 @@ const [isLoading, setIsLoading]= useState(false)
             >
               <option>Select City </option>
 
-              {majorCountries.map((city, index) => (
+              {pakistanCities.map((city, index) => (
                 <option key={index} value={city}>
                   {city}
-
-                </option>))}
+                </option>
+              ))}
             </Input>
-
 
             {requirementsErrors.requiredCity && (
               <div className="text-danger">
@@ -867,12 +878,13 @@ const [isLoading, setIsLoading]= useState(false)
             >
               <option>Select Sect </option>
 
-              {
-                Sects.map((sect, index) => {
-                  return <option key={index} value={sect}>{sect}</option>
-
-                })
-              }
+              {Sects.map((sect, index) => {
+                return (
+                  <option key={index} value={sect}>
+                    {sect}
+                  </option>
+                );
+              })}
             </Input>
             {requirementsErrors.requiredSect && (
               <div className="text-danger">
@@ -881,7 +893,6 @@ const [isLoading, setIsLoading]= useState(false)
             )}
           </FormGroup>
         </Col>
-
         <Col md={6}>
           <FormGroup>
             <Label for="requiredCast">Cast</Label>
@@ -906,8 +917,8 @@ const [isLoading, setIsLoading]= useState(false)
               {majorCastes.map((cast, index) => (
                 <option key={index} value={cast}>
                   {cast}
-
-                </option>))}
+                </option>
+              ))}
             </Input>
             {requirementsErrors.requiredCast && (
               <div className="text-danger">
@@ -916,26 +927,16 @@ const [isLoading, setIsLoading]= useState(false)
             )}
           </FormGroup>
         </Col>
-
-
       </Row>
       {/* <Button type="submit" color="primary">
         Submit
       </Button> */}
 
-      <Button
-  color="primary"
-  disabled
-  type="submit"
->
-    
-  <Spinner size="sm">
-    Loading...
-  </Spinner>
-  <span>
-   Loading  
-  </span>
-</Button>
+      <Button color="primary"  disabled={isLoading} type="submit">
+        {isLoading && <Spinner size="sm" className="me-2"></Spinner>}
+
+       <span>{isLoading?"Submitting":"Submit"}</span>
+      </Button>
     </Form>
   );
 };

@@ -8,10 +8,14 @@ import {
   Input,
   Button,
   Alert,
+  Spinner,
 } from "reactstrap";
 import "./style.css";
 import { loginUser, regsiterUser } from "../../ServerRequests/Auth";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/authContext";
+import { toast } from "react-toastify";
+import axios from "axios";
 const AuthForm = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -19,7 +23,9 @@ const AuthForm = () => {
     password: "",
   });
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
+  const { setAuth } = useAuth()
 
   const [isRegistering, setIsRegistering] = useState(true);
 
@@ -33,32 +39,52 @@ const AuthForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isRegistering && !formData.name || !formData.email || !formData.password) {
+      toast.error("Please fill the form")
+      return
+    }
+    setIsLoading(true)
     if (!isRegistering) {
       try {
-        const res = await loginUser("user/login-user", {
+        const res = await loginUser("user/login", {
           email: formData.email,
           password: formData.password,
         });
+
+        console.log("res55",res)
+
         if (res && res.data && res.data.success) {
+          setAuth(res.data)
           setVisible(false);
+          localStorage.setItem("user", JSON.stringify(res.data.user) )
           navigate("/");
         } else {
-          console.log("something went wronge");
+          console.log("something went wrong");
         }
       } catch (error) {
-        console.log("something went wronge", error);
+        console.log("something went wrong", error);
+        if(error.response.status===400){
+          toast.error(error.response.data.message)
+        }
+      } finally {
+        setIsLoading(false)
       }
       return;
     }
     try {
-      const res = await regsiterUser("user/register-user", formData);
+      const res = await regsiterUser("user/register", formData);
       if (res && res.data && res.data.success) {
         setVisible(true);
+        toast.success("Account created")
       } else {
-        console.log("something went wronge");
+        toast.error("Something went wrong")
       }
     } catch (error) {
-      console.log("something went wronge", error);
+      console.log("something went wrong", error);
+      toast.error("Something went wrong")
+    } finally {
+      setIsLoading(false)
     }
   };
   const onDismiss = () => setVisible(false);
@@ -95,7 +121,7 @@ const AuthForm = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Enter your email"
+            placeholder="Enter your name"
             type="text"
           />
         </FormGroup>
@@ -113,16 +139,21 @@ const AuthForm = () => {
         />
       </FormGroup>
       <FormGroup>
-        <Button color="primary" type="submit">
+        {/* <Button color="primary" type="submit">
           Submit
+        </Button> */}
+        <Button color="primary" disabled={isLoading} type="submit">
+          {isLoading && <Spinner size="sm" className="me-2"></Spinner>}
+
+          <span>{isLoading ? "Submitting" : "Submit"}</span>
         </Button>
         <p
           onClick={() => setIsRegistering((prev) => !prev)}
           className="__form-toggler"
         >
           {isRegistering
-            ? " Have already account?. click here to login"
-            : "Don't have account?. go to login"}
+            ? " Have already account?. Click here to login"
+            : "Don't have account?.Go to register"}
         </p>
       </FormGroup>
     </Form>

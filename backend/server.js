@@ -5,11 +5,8 @@ import dotenv from "dotenv";
 import userRoute from "./routes/userRoutes.js";
 import groomRoute from "./routes/groomRoutes.js";
 import connectDB from "./db.js";
-import  formidableMiddleware from 'express-formidable'
-
 // Load environment variables from .env file
 dotenv.config();
-
 // Connect to the database
 connectDB();
 
@@ -21,7 +18,6 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(formidableMiddleware());
 
 
 // Define routes

@@ -22,6 +22,7 @@ export const addGroom = async (req, res) => {
       requiredCast,
       ...groomData,
     });
+  
     const recordExists = await groomModel.findOne({
       phoneNumber: groomData.phoneNumber,
     });
@@ -191,9 +192,9 @@ export const getGrooms = async (req, res) => {
     // Fetch grooms based on the filter and pagination options
     const grooms = await groomModel.find(filter, null, options);
 
+
     // Fetch total count of grooms matching the filter
     const totalGroomsCount = await groomModel.countDocuments();
-
     // Respond with the fetched grooms and pagination metadata
     res.status(200).json({
       success: true,

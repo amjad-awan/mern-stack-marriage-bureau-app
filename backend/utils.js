@@ -8,6 +8,15 @@ export const doHashed = async (password) => {
     console.log("error while hashing password");
   }
 };
+export const comparePass = async (plainPass,hashedPass) => {
+  try {
+    // const Salt = await bcrypt.genSalt(10);
+
+    return await bcrypt.compare(plainPass,hashedPass)
+  } catch (error) {
+    console.log("error while comparing password");
+  }
+};
 
 export const createToken= async (userId)=> {
   try {
