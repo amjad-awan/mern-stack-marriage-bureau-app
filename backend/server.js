@@ -14,9 +14,10 @@ connectDB();
 const app = express();
 
 // Set up middleware
-app.use(express.json());
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.use(bodyParser.urlencoded({ extended: false, limit:false, }));
 app.use(bodyParser.json());
 
 
