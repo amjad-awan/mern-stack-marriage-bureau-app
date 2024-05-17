@@ -104,7 +104,7 @@ export const addGroom = async (req, res) => {
 //       data: grooms,
 //       page: parseInt(page),
 //       limit: parseInt(limit),
-//       totalPages: Math.ceil(totalGroomsCount / parseInt(limit)),
+//       totalgrooms: Math.ceil(totalGroomsCount / parseInt(limit)),
 //       totalGrooms: totalGroomsCount,
 //       message: "Grooms fetched",
 //     });
@@ -202,7 +202,7 @@ export const getGrooms = async (req, res) => {
       data: grooms,
       // page: parseInt(page),
       // limit: parseInt(limit),
-      // totalPages: Math.ceil(totalGroomsCount / parseInt(limit)),
+      // totalgrooms: Math.ceil(totalGroomsCount / parseInt(limit)),
       totalGrooms: totalGroomsCount,
       message: "Grooms fetched",
     });

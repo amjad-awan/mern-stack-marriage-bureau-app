@@ -5,6 +5,7 @@ import axios from "axios";
 import { getGrooms } from "../../ServerRequests/groomRequest";
 import { useGrooms } from "../../context/groomContext";
 import GroomCard from "../../components/GroomCard/GroomCard";
+import "./style.css"
 import {
   Button,
   Col,
@@ -19,22 +20,22 @@ import {
 } from "reactstrap";
 import PaginationCom from "../../components/Pagination/Pagination";
 import Filters from "../../components/Filters/Filters";
-import { toast } from "react-toastify";
 const HomePage = () => {
   const {
     grooms,
     setGrooms,
-    setTotalpages,
+    setTotalGrooms,
+    totalGrooms,
     params,
     loading,
+    page,
     setLoading,
     setParams,
   } = useGrooms();
   const [showFilters, setShowFilters] = useState(false);
 
-  let id;
+ useGrooms()
 
-  console.log("grooms", grooms);
   const cleareFilter = () => {
     setParams({
       page: 1,
@@ -56,9 +57,8 @@ const HomePage = () => {
       setLoading(false);
 
       const response = await getGrooms("groom/get-grooms", params);
-      console.log("response", response);
       setGrooms(response.data.data);
-      setTotalpages(response.data.totalGrooms);
+      setTotalGrooms(response.data.totalGrooms);
       setLoading(true);
     } catch (error) {
       console.error("Error fetching grooms:", error);
@@ -115,7 +115,8 @@ const HomePage = () => {
         </Dropdown>
       </div>
       {showFilters && <Filters />}
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div className="pagination-home">
+        <p> {grooms.length} of total {totalGrooms} on page {page} </p>
         <PaginationCom />
       </div>
       {!loading && (

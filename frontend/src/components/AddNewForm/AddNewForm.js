@@ -25,8 +25,8 @@ const AddNewForm = () => {
   const [requirements, setRequirements] = useState({
     requiredAge: "",
     requiredHeight: "",
-    requiredCity: "",
-    requiredCast: "",
+    requiredCity: "Faisalabad",
+    requiredCast: "Shaikh",
     requiredQualification: "",
     requiredSect: "",
   });
@@ -42,17 +42,17 @@ const AddNewForm = () => {
     height: "",
     qualification: "",
     collegeUniversity: "",
-    job: "",
+    job: "Own business",
     income: "",
-    religion: "",
+    religion: "Islam",
     sect: "",
-    cast: "",
+    cast: "Shaikh",
     home: "",
     size: "",
-    city: "",
+    city: "Faisalabad",
     address: "",
     migration: "",
-    nationality: "",
+    nationality: "Pakistan",
     fatherOccupation: "",
     motherOccupation: "",
     brothers: "",
@@ -382,9 +382,8 @@ if(!formData.filePhoto){
               value={formData.job}
               onChange={handleChange}
             >
-              <option>Select Ouccupation </option>
+              <option>Own business</option>
 
-              <option>Own business </option>
               <option>Govt job</option>
               <option>Private job</option>
               <option>Unemployed </option>
@@ -424,7 +423,6 @@ if(!formData.filePhoto){
               value={formData.religion}
               onChange={handleChange}
             >
-              <option>Select Religion </option>
 
               <option>Islam </option>
               <option>Hindu</option>
@@ -474,9 +472,10 @@ if(!formData.filePhoto){
               placeholder="Enter Cast..."
               type="select"
               value={formData.cast}
+              defaultValue="Shaikh"
               onChange={handleChange}
             >
-              <option>Select Cast </option>
+              <option>Shaikh</option>
 
               {majorCastes.map((cast, index) => (
                 <option key={index} value={cast}>
@@ -618,7 +617,7 @@ if(!formData.filePhoto){
               value={formData.nationality}
               onChange={handleChange}
             >
-              <option value="">Select Nationality</option>
+              <option value="">Pakistan</option>
               {majorCountries.map((city, index) => (
                 <option key={index} value={city}>
                   {city}
@@ -805,7 +804,7 @@ if(!formData.filePhoto){
                 }));
               }}
             >
-              <option>Select City </option>
+              <option>Faisalabad </option>
 
               {pakistanCities.map((city, index) => (
                 <option key={index} value={city}>
@@ -912,7 +911,7 @@ if(!formData.filePhoto){
                 }));
               }}
             >
-              <option>Select Cast </option>
+              <option>Shaikh</option>
 
               {majorCastes.map((cast, index) => (
                 <option key={index} value={cast}>

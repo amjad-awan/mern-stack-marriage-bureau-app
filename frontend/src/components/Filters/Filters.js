@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, FormGroup, Input, Label, Row } from "reactstrap";
 import { useGrooms } from "../../context/groomContext";
-import { majorCastes, majorCountries, pakistanCities } from "../../constants/data";
+import { Sects, majorCastes, majorCountries, pakistanCities } from "../../constants/data";
 import "./style.css"
 const Filters = () => {
   const { params, setParams } = useGrooms();
@@ -83,10 +83,20 @@ const Filters = () => {
             <Input
               value={params.sect}
               name="sect"
-              type="text"
+              type="select"
               id="exampleSect"
               onChange={handleInputChange}
-            />
+            >
+              <option>Select Sect </option>
+
+{Sects.map((sect, index) => {
+  return (
+    <option key={index} value={sect}>
+      {sect}
+    </option>
+  );
+})}
+</Input>
           </FormGroup>
         </Col>
 
