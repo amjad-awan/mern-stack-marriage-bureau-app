@@ -18,7 +18,12 @@ const corsOptions ={
   optionSuccessStatus:200,
 }
 // Set up middleware
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: 'https://zubair-marriage-center.netlify.app/', // use your actual domain name (or localhost), using * is not recommended
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
+  credentials: true
+}))
 app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false, limit:false, }));
