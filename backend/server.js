@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import userRoute from "./routes/userRoutes.js";
 import groomRoute from "./routes/groomRoutes.js";
 import connectDB from "./db.js";
+import compression from "compression";
 // Load environment variables from .env file
 dotenv.config();
 // Connect to the database
@@ -19,7 +20,7 @@ const corsOptions ={
 }
 // Set up middleware
 app.use(cors({
-  origin: 'https://zubair-marriage-center.netlify.app', // use your actual domain name (or localhost), using * is not recommended
+  origin: process.env.HOST, // use your actual domain name (or localhost), using * is not recommended
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
   credentials: true
@@ -28,7 +29,10 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false, limit:false, }));
 app.use(bodyParser.json());
-
+app.use(compression({
+  threshold: 1024, // compress all responses larger than 1 KB
+  level: 6, // use compression level 6 (balanced between speed and compression ratio)
+}));
 
 // Define routes
 app.use("/api/v1/user", userRoute);
