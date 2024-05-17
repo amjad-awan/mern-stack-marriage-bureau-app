@@ -29,6 +29,7 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false, limit:false, }));
 app.use(bodyParser.json());
+app.use(myParser.text({ limit: '200mb' }));
 app.use(compression({
   threshold: 1024, // compress all responses larger than 1 KB
   level: 6, // use compression level 6 (balanced between speed and compression ratio)
