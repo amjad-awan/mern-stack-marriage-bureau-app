@@ -12,9 +12,13 @@ connectDB();
 
 // Initialize Express app
 const app = express();
-
+const corsOptions ={
+  origin:'*', 
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200,
+}
 // Set up middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false, limit:false, }));
