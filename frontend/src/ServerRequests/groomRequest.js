@@ -12,4 +12,7 @@ export const getGrooms = (url, params) =>
     params: params,
   });
 
+  export const getPhoto = (url) =>
+    API.get(url);
+
   export const getSingleGroom = (url) =>API.get(url);

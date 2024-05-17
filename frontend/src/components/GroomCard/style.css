@@ -7,13 +7,14 @@
 }
 .text-wrapper{
     display: flex;
+    font-size: 13px !important;
     justify-content: space-between;
-    margin-bottom: 17px !important;
+    margin-bottom: 10px !important;
 }
 .info{
     /* color: rgb(228, 224, 219); */
     font-size: 14px !important;
-    font-weight: 400 !important;
+    font-weight: 300 !important;
 }
 .looking-for-btn{
     margin-top: 20px;
@@ -27,5 +28,39 @@
 .groom-img{
     height: 200px;
     width: 100%;
+    overflow: hidden;
+}
+.groom-img img{
+    height:100%;
+    width: 100%;
     object-fit: cover;
+    transition:all linear 1s ;
+
+}
+.groom-img:hover img{
+    transform: scale(1.2);
+
+}
+
+.details-btn
+{
+    margin-top: 20px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid rgb(26, 80, 230);
+    padding: 5px;
+    color: rgb(26, 80, 230);;
+    border-radius: 5px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    transition:all linear .4s ;
+
+}
+.details-btn:hover{
+    background-color: rgb(26, 80, 230);;
+    color: #fff;
+
 }

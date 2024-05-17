@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -11,14 +11,37 @@ import {
 import { Buffer } from "buffer";
 import "./style.css";
 import { Link } from "react-router-dom";
-const GroomCard = ({ data }) => {
-  const [lookingFor, setLookingFor] = useState();
-  console.log("lookingFor", lookingFor);
+import pic from "../../assets/images/blur.jpg";
 
-  const base64String =data?.photo?.data?Buffer.from(data.photo.data).toString("base64"):"";
+import { getPhoto } from "../../ServerRequests/groomRequest";
+const GroomCard = ({ data, setPhotoLoading, photoLoading }) => {
+  const [photo, setPhoto] = useState({});
+  const handlePhoto = async () => {
+    try {
+      const res = await getPhoto("groom/get-single-photo/" + data?._id);
+      if (res && res.data) {
+        setPhoto(res.data.data);
+      } else {
+        console.log("there error when fetching groom picture");
+      }
+    } catch (error) {
+      console.log("there is error", error);
+    } finally {
+      setPhotoLoading(false);
+    }
+  };
+  useEffect(() => {
+    handlePhoto();
+  }, [data._id]);
 
+  const base64String = photo?.photo?.data
+    ? Buffer.from(photo.photo.data).toString("base64")
+    : "";
   // Construct the data URL for the image
-  const imageUrl = data?.photo?.contentType?`data:${data.photo.contentType};base64,${base64String}`:"";
+  const imageUrl = photo?.photo?.contentType
+    ? `data:${photo.photo.contentType};base64,${base64String}`
+    : "";
+  if (photoLoading) return "";
   return (
     <Card
       style={{
@@ -27,7 +50,10 @@ const GroomCard = ({ data }) => {
         overflow: "hidden",
       }}
     >
-      <img alt="Sample" src={imageUrl} className="groom-img" />
+      <div className={`groom-img `}>
+        {imageUrl && <img alt="Sample" src={imageUrl} />}
+      </div>
+
       <CardBody>
         <CardTitle tag="h5" className="mb-3">
           Groom info:
@@ -48,7 +74,10 @@ const GroomCard = ({ data }) => {
           Sect: <span className="info">{data.sect} </span>
         </CardSubtitle>
         <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Education: <span className="info">{data.qualification ?data.qualification:"Not mentioned"} </span>
+          Education:{" "}
+          <span className="info">
+            {data.qualification ? data.qualification : "Not mentioned"}{" "}
+          </span>
         </CardSubtitle>
         {/* {lookingFor === data._id && (
           <>
@@ -89,7 +118,10 @@ const GroomCard = ({ data }) => {
         >
           {lookingFor ? "Hide" : "      Looking for          "} */}
         {/* </span> */}
-        <Link to={`/${data._id}`}>Details</Link>
+        <Link to={`/${data._id}`} className="details-btn">
+          {" "}
+          details
+        </Link>
       </CardBody>
     </Card>
   );

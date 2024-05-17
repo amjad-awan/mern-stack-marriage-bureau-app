@@ -33,6 +33,7 @@ const HomePage = () => {
     setParams,
   } = useGrooms();
   const [showFilters, setShowFilters] = useState(false);
+  const [photoLoading, setPhotoLoading]= useState(true)
 
  useGrooms()
 
@@ -135,11 +136,11 @@ const HomePage = () => {
           ? grooms.map((data, index) => {
               return (
                 <Col sm={12} md={6} lg={3} key={index}>
-                  <GroomCard  data={data} />
+                  <GroomCard  data={data} setPhotoLoading={setPhotoLoading} photoLoading={photoLoading}/>
                 </Col>
               );
             })
-          : loading && <p>No data found</p>}
+          : loading && !photoLoading && <p>No data found</p>}
       </Row>
     </Layout>
   );

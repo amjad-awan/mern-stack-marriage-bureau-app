@@ -70,6 +70,28 @@ export const addGroom = async (req, res) => {
   }
 };
 
+export const getPhoto = async (req, res) => {
+  try {
+    // Extract query parameters
+    const { id } = req.params;
+
+    const photo = await groomModel.findById(id).select("photo");
+    res.status(200).json({
+      success: true,
+      error: false,
+      data: photo,
+      message: "photo fetched",
+    });
+  } catch (error) {
+    console.error("Error fetching photo:", error);
+    res.status(500).json({
+      success: false,
+      error: true,
+      message: "There was an error while fetching photo",
+    });
+  }
+};
+
 // export const getGrooms = async (req, res) => {
 //   try {
 //     // Extract query parameters
