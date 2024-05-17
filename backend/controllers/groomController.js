@@ -190,7 +190,7 @@ export const getGrooms = async (req, res) => {
     };
 
     // Fetch grooms based on the filter and pagination options
-    const grooms = await groomModel.find(filter, null, options).select('-requirements');
+    const grooms = await groomModel.find(filter, null, options).select('-requirements -photo');
 
 
     // Fetch total count of grooms matching the filter
