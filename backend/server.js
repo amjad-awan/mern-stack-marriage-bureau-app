@@ -27,9 +27,9 @@ app.use(cors({
 }))
 app.use(express.json());
 
-app.use(bodyParser.json({limit: '50mb', extended: true}));
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
-app.use(bodyParser.text({ limit: '200mb' }));
+app.use(bodyParser.json({limit: '50000000', extended: true}));
+app.use(bodyParser.urlencoded({imit: '50000000', extended: true}));
+app.use(bodyParser.text({ imit: '50000000' }));
 app.use(compression({
   threshold: 1024, // compress all responses larger than 1 KB
   level: 6, // use compression level 6 (balanced between speed and compression ratio)
