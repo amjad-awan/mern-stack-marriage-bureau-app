@@ -148,7 +148,7 @@ export const getGrooms = async (req, res) => {
     // Extract query parameters
     const {
       page = 1,
-      limit = 10,
+      limit = 5,
       search,
       gender,
       height,
@@ -190,7 +190,7 @@ export const getGrooms = async (req, res) => {
     };
 
     // Fetch grooms based on the filter and pagination options
-    const grooms = await groomModel.find(filter, null, options);
+    const grooms = await groomModel.find(filter, null, options).select('-requirements');
 
 
     // Fetch total count of grooms matching the filter

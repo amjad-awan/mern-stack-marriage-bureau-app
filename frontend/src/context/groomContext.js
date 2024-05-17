@@ -18,7 +18,7 @@ const GroomProvider = ({ children }) => {
   const [totalPages, setTotalpages]= useState(null)
   const [params, setParams] = useState({
     page: page,
-    limit: 10,
+    limit: 5,
     cast: "",
     search:"",
     height: "",

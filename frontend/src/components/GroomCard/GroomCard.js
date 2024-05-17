@@ -50,7 +50,7 @@ const GroomCard = ({ data }) => {
         <CardSubtitle className=" text-muted text-wrapper" tag="h6">
           Education: <span className="info">{data.qualification ?data.qualification:"Not mentioned"} </span>
         </CardSubtitle>
-        {lookingFor === data._id && (
+        {/* {lookingFor === data._id && (
           <>
             <p className="looking-for">Looking for</p>
             <CardSubtitle className=" text-muted text-wrapper" tag="h6">
@@ -76,19 +76,19 @@ const GroomCard = ({ data }) => {
               </span>
             </CardSubtitle>
           </>
-        )}
+        )} */}
 
         {/* <Button className='looking-for-btn' color='primary'>
       
       </Button> */}
-        <span
+        {/* <span
           className="look-for"
           onClick={() => {
             setLookingFor(data._id === lookingFor ? "" : data._id);
           }}
         >
-          {lookingFor ? "Hide" : "      Looking for          "}
-        </span>
+          {lookingFor ? "Hide" : "      Looking for          "} */}
+        {/* </span> */}
         <Link to={`/${data._id}`}>Details</Link>
       </CardBody>
     </Card>

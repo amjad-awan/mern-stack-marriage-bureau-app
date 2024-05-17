@@ -29,7 +29,7 @@ const PaginationCom = () => {
     return resultArray;
   }
 
-  if (totalPages<=10)  return <></>
+  if (totalPages<=5)  return <></>
   return (
     <Pagination
       aria-label="Page navigation example"
