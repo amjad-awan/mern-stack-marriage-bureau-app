@@ -7,7 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <>
-      <div className="App container">
+      <div className="App">
+        <div className="inner-wrapper">
+        <AppRoutes /> 
+        </div>
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -22,9 +25,11 @@ function App() {
         />
         {/* Same as */}
         <ToastContainer />
-        <AppRoutes />
+           <div className="footer">
+            <p> @ Copy right reserved by zubair marriage center | <a target="_blank" href="https://www.upwork.com/freelancers/~01fe666696114ee1da">developed by amjad mehmood</a>  </p>
+           </div>
+
       </div>
-      {/* <div className="footer"></div> */}
     </>
 
   );

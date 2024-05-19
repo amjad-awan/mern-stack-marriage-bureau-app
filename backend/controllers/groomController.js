@@ -211,9 +211,11 @@ export const getGrooms = async (req, res) => {
       skip: (parseInt(page) - 1) * parseInt(limit), // Calculate the offset
     };
 
+
     // Fetch grooms based on the filter and pagination options
     const grooms = await groomModel.find(filter, null, options).select('-requirements -photo');
 
+    console.log("grooms",grooms)
 
     // Fetch total count of grooms matching the filter
     const totalGroomsCount = await groomModel.countDocuments();

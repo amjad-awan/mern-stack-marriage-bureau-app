@@ -5,7 +5,7 @@ import axios from "axios";
 import { getGrooms } from "../../ServerRequests/groomRequest";
 import { useGrooms } from "../../context/groomContext";
 import GroomCard from "../../components/GroomCard/GroomCard";
-import "./style.css"
+import "./style.css";
 import {
   Button,
   Col,
@@ -20,6 +20,7 @@ import {
 } from "reactstrap";
 import PaginationCom from "../../components/Pagination/Pagination";
 import Filters from "../../components/Filters/Filters";
+import { getURLParams, setQueryParams } from "../../helpers/URLParams";
 const HomePage = () => {
   const {
     grooms,
@@ -33,31 +34,22 @@ const HomePage = () => {
     setParams,
   } = useGrooms();
   const [showFilters, setShowFilters] = useState(false);
-  const [photoLoading, setPhotoLoading]= useState(true)
+  const [photoLoading, setPhotoLoading] = useState(true);
+  const urlParams = getURLParams();
 
- useGrooms()
+  useGrooms();
 
   const cleareFilter = () => {
-    setParams({
-      page: 1,
-      limit: 10,
-      cast: "",
-      search: "",
-      height: "",
-      qualification: "",
-      martialStatus: "",
-      sect: "",
-      city: "",
-      gender: "",
-      nationality: "",
-    });
-    setShowFilters(false);
+    setQueryParams({});
+    setParams({});
+    // setShowFilters(false);
   };
+
   const fetchGrooms = async () => {
     try {
       setLoading(false);
 
-      const response = await getGrooms("groom/get-grooms", params);
+      const response = await getGrooms("groom/get-grooms", getURLParams());
       setGrooms(response.data.data);
       setTotalGrooms(response.data.totalGrooms);
       setLoading(true);
@@ -117,7 +109,11 @@ const HomePage = () => {
       </div>
       {showFilters && <Filters />}
       <div className="pagination-home">
-        <p> {grooms.length} of total {totalGrooms} on page {page} </p>
+        <p>
+          {" "}
+          {grooms.length} of total {totalGrooms} on page{" "}
+          {urlParams.page ?? page}{" "}
+        </p>
         <PaginationCom />
       </div>
       {!loading && (
@@ -136,7 +132,11 @@ const HomePage = () => {
           ? grooms.map((data, index) => {
               return (
                 <Col sm={12} md={6} lg={3} key={index}>
-                  <GroomCard  data={data} setPhotoLoading={setPhotoLoading} photoLoading={photoLoading}/>
+                  <GroomCard
+                    data={data}
+                    setPhotoLoading={setPhotoLoading}
+                    photoLoading={photoLoading}
+                  />
                 </Col>
               );
             })

@@ -65,13 +65,7 @@ const GroomCard = ({ data, setPhotoLoading, photoLoading }) => {
           Age: <span className="info"> {data.age} y</span>
         </CardSubtitle>
         <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Height: <span className="info"> {data.height} ft</span>
-        </CardSubtitle>
-        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          City: <span className="info"> {data.city}</span>
-        </CardSubtitle>
-        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Sect: <span className="info">{data.sect} </span>
+          Cast: <span className="info"> {data.cast} </span>
         </CardSubtitle>
         <CardSubtitle className=" text-muted text-wrapper" tag="h6">
           Education:{" "}
@@ -79,6 +73,17 @@ const GroomCard = ({ data, setPhotoLoading, photoLoading }) => {
             {data.qualification ? data.qualification : "Not mentioned"}{" "}
           </span>
         </CardSubtitle>
+        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
+          Businnes:{" "}
+          <span className="info">
+            {data.job ? data.job : "Not mentioned"}{" "}
+          </span>
+        </CardSubtitle>
+        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
+          City: <span className="info"> {data.city}</span>
+        </CardSubtitle>
+     
+      
         {/* {lookingFor === data._id && (
           <>
             <p className="looking-for">Looking for</p>

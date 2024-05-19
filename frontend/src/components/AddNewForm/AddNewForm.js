@@ -222,23 +222,7 @@ if(!formData.filePhoto){
         <Col sm={12} md={6}>
           <FormGroup block>
             <Label htmlFor="pic" className="select-pic">
-              {!formData.filePhoto.name && "Select picture"}
-              {formData.filePhoto.name && <span>{formData.filePhoto.name}</span>}
-              {isNoPicture && (
-                <div className="text-danger">Picture is required</div>
-              )}
-            </Label>
-            <input
-              type="file"
-              style={{ display: "none" }}
-              accept=".png,.jpg,.jpeg"
-              id="pic"
-              name="filePhoto"
-              onChange={handlePhotoChange}
-            />
-          </FormGroup>
-
-          {formData.filePhoto && (
+            {formData.filePhoto && (
             <Card className="imag-wrapper">
               <Label htmlFor="pic" className="edit-btn">
                 <FiEdit />
@@ -246,6 +230,23 @@ if(!formData.filePhoto){
               <img className="" src={URL.createObjectURL(formData.filePhoto)} />
             </Card>
           )}
+              {!formData.filePhoto.name && "Select picture"}
+              {/* {formData.filePhoto.name && <span>{formData.filePhoto.name}</span>}  */}
+              {isNoPicture && (
+                <div className="text-danger">Picture is required</div>
+              )}
+            </Label>
+            <input
+              type="file"
+              style={{ display: "none" }}
+              accept="image/png, image/jpeg, image/jpg"
+              id="pic"
+              name="filePhoto"
+              onChange={handlePhotoChange}
+            />
+          </FormGroup>
+
+        
         </Col>
 
         <Col md={6}>
@@ -470,19 +471,13 @@ if(!formData.filePhoto){
               id="Cast"
               name="cast"
               placeholder="Enter Cast..."
-              type="select"
+              type="text"
               value={formData.cast}
               defaultValue="Shaikh"
               onChange={handleChange}
-            >
-              <option>Shaikh</option>
+            />
 
-              {majorCastes.map((cast, index) => (
-                <option key={index} value={cast}>
-                  {cast}
-                </option>
-              ))}
-            </Input>
+           
             {formErrors.cast && (
               <div className="text-danger">{formErrors.cast}</div>
             )}

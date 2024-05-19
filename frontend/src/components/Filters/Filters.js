@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, FormGroup, Input, Label, Row } from "reactstrap";
 import { useGrooms } from "../../context/groomContext";
 import { Sects, majorCastes, majorCountries, pakistanCities } from "../../constants/data";
 import "./style.css"
+import { getURLParams, setQueryParams } from "../../helpers/URLParams";
 const Filters = () => {
   const { params, setParams } = useGrooms();
-
+  const urlParams = getURLParams()
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setParams((prevParams) => ({
@@ -13,6 +14,16 @@ const Filters = () => {
       [name]: value,
     }));
   };
+
+   
+  
+    // Update the query string whenever params change
+    useEffect(() => {
+      setQueryParams(params);
+    }, [params]);
+    // useEffect(() => {
+    //   setParams(urlParams);
+    // }, [params]);
 
   return (
     <div className="filter-wrapper">
@@ -23,7 +34,7 @@ const Filters = () => {
           name="gender"
           type="radio"
           value="male"
-          checked={params.gender === "male"}
+          checked={urlParams.gender === "male"}
          
           onChange={handleInputChange}
         />
@@ -35,7 +46,7 @@ const Filters = () => {
           name="gender"
           type="radio"
           value="female"
-          checked={params.gender === "female"}
+          checked={urlParams.gender === "female"}
           onChange={handleInputChange}
         />
         <Label htmlFor="female" check style={{ margin: "0px 0px 0px 10px" }}>
@@ -48,7 +59,7 @@ const Filters = () => {
           <FormGroup>
             <Label for="exampleHeight">Height</Label>
             <Input
-              value={params.height}
+              value={urlParams.height}
               name="height"
               type="text"
               id="exampleHeight"
@@ -60,7 +71,7 @@ const Filters = () => {
           <FormGroup>
             <Label for="exampleQualification">Qualification</Label>
             <Input
-              value={params.qualification}
+               value={urlParams.qualification}
               name="qualification"
               type="select"
               id="exampleQualification"
@@ -81,7 +92,7 @@ const Filters = () => {
           <FormGroup>
             <Label for="exampleSect">Sect</Label>
             <Input
-              value={params.sect}
+             value={urlParams.sect}
               name="sect"
               type="select"
               id="exampleSect"
@@ -107,7 +118,7 @@ const Filters = () => {
               type="select"
               name="city"
               id="exampleCity"
-              value={params.city}
+              value={urlParams.city}
               onChange={handleInputChange}
             >
               <option value="">Select City</option>
@@ -127,7 +138,8 @@ const Filters = () => {
               type="select"
               name="nationality"
               id="exampleNationality"
-              value={params.nationality}
+              value={urlParams.nationality}
+
               onChange={handleInputChange}
             >
               <option value="">Select Nationality</option>
@@ -148,7 +160,7 @@ const Filters = () => {
               type="select"
               name="martialStatus"
               id="exampleMartialStatus"
-              value={params.martialStatus}
+              value={urlParams.martialStatus}
               onChange={handleInputChange}
             >
               <option value="">Select Martial Status</option>
@@ -164,23 +176,14 @@ const Filters = () => {
           <FormGroup>
             <Label for="exampleCast">Cast</Label>
             <Input
-              type="select"
+              type="text"
               name="cast"
               id="exampleCast"
-              value={params.cast}
+              value={urlParams.cast}
+              
               onChange={handleInputChange}
-            >
-              <option value="">Select Cast</option>
-
-              {
-                majorCastes.map((cast, index) => {
-                  return <option value={cast} key={index}>{cast} </option>
-
-                })
-              }
-
-              {/* Add more cast options as needed */}
-            </Input>
+            />
+             
           </FormGroup>
         </Col>
       </Row>

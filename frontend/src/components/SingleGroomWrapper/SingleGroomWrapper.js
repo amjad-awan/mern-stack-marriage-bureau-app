@@ -8,7 +8,6 @@ const SingleGroomWrapper = () => {
   const { id } = useParams();
   const [groom, setGroom] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  console.log("isLoading",isLoading)
 
   const handleSingGroom = async () => {
     try {
@@ -33,9 +32,11 @@ const SingleGroomWrapper = () => {
   //   const imageUrl = `data:${groom?.photo?.contentType};base64,${base64String}`;
 
   if (isLoading) {
-    return <div className="d-flex justify-content-center mt-4">
-         <Spinner size="large" color="primary" className="me-2"></Spinner>
-    </div>
+    return (
+      <div className="d-flex justify-content-center mt-4">
+        <Spinner size="large" color="primary" className="me-2"></Spinner>
+      </div>
+    );
   }
 
   const base64String = groom?.photo?.data
@@ -216,7 +217,7 @@ const SingleGroomWrapper = () => {
         </Row>
       </Card>
     </>
-  )
-}
+  );
+};
 
 export default SingleGroomWrapper;

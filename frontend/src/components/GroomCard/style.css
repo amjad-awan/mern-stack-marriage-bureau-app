@@ -20,7 +20,7 @@
     margin-top: 20px;
 }
 .look-for{
-    color: rgb(19, 130, 226);
+    color: #0d6efd;;;
     margin-right: 30px;
     text-decoration: underline;
     cursor: pointer;
@@ -34,11 +34,11 @@
     height:100%;
     width: 100%;
     object-fit: cover;
-    transition:all linear 1s ;
+    transition:all linear .5s ;
 
 }
 .groom-img:hover img{
-    transform: scale(1.2);
+    transform: scale(1.07);
 
 }
 
@@ -49,9 +49,9 @@
     display: block;
     text-align: center;
     background-color: transparent;
-    border: 1px solid rgb(26, 80, 230);
+    border: 1px solid #0d6efd;
     padding: 5px;
-    color: rgb(26, 80, 230);;
+    color: #0d6efd;;
     border-radius: 5px;
     text-decoration: none;
     text-transform: uppercase;
@@ -60,7 +60,7 @@
 
 }
 .details-btn:hover{
-    background-color: rgb(26, 80, 230);;
+    background-color: #0d6efd;;;
     color: #fff;
 
 }
