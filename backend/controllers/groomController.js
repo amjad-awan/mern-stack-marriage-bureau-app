@@ -195,7 +195,6 @@ export const getGrooms = async (req, res) => {
       ];
     }
 
-    // Apply additional filter conditions for other fields
     if (gender) filter.gender = gender;
     if (height) filter.height = height;
     if (qualification) filter.qualification = qualification;
@@ -205,21 +204,16 @@ export const getGrooms = async (req, res) => {
     if (nationality) filter.nationality = nationality;
     if (cast) filter.cast = cast;
 
-    // Build pagination options
     const options = {
       limit: parseInt(limit), // Convert string to number
       skip: (parseInt(page) - 1) * parseInt(limit), // Calculate the offset
     };
 
 
-    // Fetch grooms based on the filter and pagination options
     const grooms = await groomModel.find(filter, null, options).select('-requirements -photo');
 
-    console.log("grooms",grooms)
 
-    // Fetch total count of grooms matching the filter
     const totalGroomsCount = await groomModel.countDocuments();
-    // Respond with the fetched grooms and pagination metadata
     res.status(200).json({
       success: true,
       error: false,

@@ -6,8 +6,15 @@ import { getGrooms } from "../../ServerRequests/groomRequest";
 import { useGrooms } from "../../context/groomContext";
 import GroomCard from "../../components/GroomCard/GroomCard";
 import "./style.css";
+import { GiSettingsKnobs } from "react-icons/gi";
+
 import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
   Button,
+  Card,
   Col,
   Dropdown,
   DropdownItem,
@@ -21,6 +28,8 @@ import {
 import PaginationCom from "../../components/Pagination/Pagination";
 import Filters from "../../components/Filters/Filters";
 import { getURLParams, setQueryParams } from "../../helpers/URLParams";
+import ClearButton from "../../components/ClearButton/ClearButton";
+import Animation from "../../components/Animation/Animation";
 const HomePage = () => {
   const {
     grooms,
@@ -36,7 +45,14 @@ const HomePage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [photoLoading, setPhotoLoading] = useState(true);
   const urlParams = getURLParams();
-
+  const [open, setOpen] = useState('');
+  const toggleAccord = (id) => {
+    if (open === id) {
+      setOpen();
+    } else {
+      setOpen(id);
+    }
+  };
   useGrooms();
 
   const cleareFilter = () => {
@@ -63,7 +79,7 @@ const HomePage = () => {
   useEffect(() => {
     fetchGrooms();
   }, [params]); // Refetch grooms when params change
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
+  const Accord = () => setDropdownOpen((prevState) => !prevState);
 
   return (
     <Layout>
@@ -73,10 +89,12 @@ const HomePage = () => {
           alignItems: "center",
           marginBottom: "30px",
           gap: "10px",
+          flexDirection:"column",
           justifyContent: "flex-end",
         }}
       >
-        <FormGroup className="search-bar mt-3">
+           <Animation/>
+        <FormGroup className="search-bar mt-3 ">
           <Input
             id="exampleName"
             name="name"
@@ -94,7 +112,7 @@ const HomePage = () => {
         
         Filters 
         </Button> */}
-        <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+        {/* <Dropdown isOpen={dropdownOpen} toggle={toggle}>
           <DropdownToggle caret color="primary">
             Filters
           </DropdownToggle>
@@ -105,17 +123,24 @@ const HomePage = () => {
             </DropdownItem>
             <DropdownItem onClick={cleareFilter}>Clear Filters</DropdownItem>
           </DropdownMenu>
-        </Dropdown>
+        </Dropdown> */}
       </div>
-      {showFilters && <Filters />}
-      <div className="pagination-home">
-        <p>
-          {" "}
-          {grooms.length} of total {totalGrooms} on page{" "}
-          {urlParams.page ?? page}{" "}
-        </p>
-        <PaginationCom />
+
+      <div className="__filter-accord">
+      <Accordion flush open={open} toggle={toggleAccord}>
+        <AccordionItem>
+          <AccordionHeader targetId="1"><GiSettingsKnobs className="__filter-icon" /></AccordionHeader>
+          <AccordionBody accordionId="1" className="p-0">
+          <Filters/>
+
+          <ClearButton cleareFilter={cleareFilter} textColor="#0d6efd" bColor="#0d6efd"/>
+
+          {/* <Button onClick={()=>{toggleAccord();cleareFilter()}}>Clear Filters</Button> */}
+          </AccordionBody>
+        </AccordionItem>
+        </Accordion>
       </div>
+
       {!loading && (
         <div
           style={{
@@ -127,21 +152,39 @@ const HomePage = () => {
           <Spinner color="primary mx-auto" size="sm"></Spinner>
         </div>
       )}
-      <Row>
-        {grooms.length > 0
-          ? grooms.map((data, index) => {
-              return (
-                <Col sm={12} md={6} lg={3} key={index}>
-                  <GroomCard
-                    data={data}
-                    setPhotoLoading={setPhotoLoading}
-                    photoLoading={photoLoading}
-                  />
-                </Col>
-              );
-            })
-          : loading && !photoLoading && <p>No data found</p>}
-      </Row>
+      <div className="__home-page-filters-cards">
+        <div className="_home-filters">
+          <Filters/>
+            <ClearButton cleareFilter={cleareFilter} textColor="#fff" bColor="#fff"/>
+          <div className="pagination-home">
+            <p>
+              {" "}
+              {grooms.length} of total {totalGrooms} on page{" "}
+              {urlParams.page ?? page}{" "}
+            </p>
+            <PaginationCom />
+          </div>
+        </div>
+        <Row style={{ width: "100%" }}>
+          {grooms.length > 0
+            ? grooms.map((data, index) => {
+                return (
+                  <Col sm={12} md={6} lg={4} key={index}>
+                    <GroomCard
+                      data={data}
+                      setPhotoLoading={setPhotoLoading}
+                      photoLoading={photoLoading}
+                    />
+                  </Col>
+                );
+              })
+            : loading && !photoLoading && <p>No data found</p>}
+           
+        </Row>
+
+      
+      </div>
+  
     </Layout>
   );
 };

@@ -55,7 +55,7 @@ const Filters = () => {
       </FormGroup>
       <Row>
       
-        <Col md={6} lg={3}>
+        <Col md={12} lg={12}>
           <FormGroup>
             <Label for="exampleHeight">Height</Label>
             <Input
@@ -67,7 +67,7 @@ const Filters = () => {
             />
           </FormGroup>
         </Col>
-        <Col md={6} lg={3}>
+        <Col md={12} lg={12}>
           <FormGroup>
             <Label for="exampleQualification">Qualification</Label>
             <Input
@@ -88,7 +88,7 @@ const Filters = () => {
               </Input>
           </FormGroup>
         </Col>
-        <Col md={6} lg={3}>
+        <Col md={12} lg={12}>
           <FormGroup>
             <Label for="exampleSect">Sect</Label>
             <Input
@@ -111,7 +111,7 @@ const Filters = () => {
           </FormGroup>
         </Col>
 
-        <Col md={6} lg={3}>
+        <Col md={12} lg={12}>
           <FormGroup>
             <Label for="exampleCity">City</Label>
             <Input
@@ -131,7 +131,7 @@ const Filters = () => {
             </Input>
           </FormGroup>
         </Col>
-        <Col md={6} lg={3}>
+        <Col md={12} lg={12}>
           <FormGroup>
             <Label for="exampleNationality">Nationality</Label>
             <Input
@@ -153,7 +153,7 @@ const Filters = () => {
             </Input>
           </FormGroup>
         </Col>
-        <Col md={6} lg={3}>
+        <Col md={12} lg={12}>
           <FormGroup>
             <Label for="exampleMartialStatus">Martial Status</Label>
             <Input
@@ -172,18 +172,26 @@ const Filters = () => {
           </FormGroup>
         </Col>
 
-        <Col md={6} lg={3}>
+        <Col md={12} lg={12}>
           <FormGroup>
             <Label for="exampleCast">Cast</Label>
             <Input
-              type="text"
+              type="select"
               name="cast"
               id="exampleCast"
               value={urlParams.cast}
               
               onChange={handleInputChange}
-            />
+            >
+              <option value="">Select Cast</option>
              
+             {majorCastes.map((cast, index) => (
+               <option key={index} value={cast}>
+                 {cast}
+               </option>
+             ))}
+
+</Input>
           </FormGroup>
         </Col>
       </Row>

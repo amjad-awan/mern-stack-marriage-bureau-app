@@ -20,7 +20,7 @@
     margin-top: 20px;
 }
 .look-for{
-    color: #0d6efd;;;
+    color: #0d6efd;
     margin-right: 30px;
     text-decoration: underline;
     cursor: pointer;
@@ -29,7 +29,11 @@
     height: 200px;
     width: 100%;
     overflow: hidden;
+    position: relative;
+    cursor: pointer;
 }
+
+
 .groom-img img{
     height:100%;
     width: 100%;
@@ -41,7 +45,32 @@
     transform: scale(1.07);
 
 }
+.groom-img:hover .__image_overlay{
+    transform: scale(1);
+    border-radius: 0%;
 
+}
+
+.__image_overlay{
+    position: absolute;
+    background-color: #0d6dfd50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0%;
+    bottom: 0;
+    border-radius: 50%;
+ transform: scale(0);
+    transition:all ease-in-out .5s ;
+}
+.__open-icon
+{
+    font-size: 50px;
+    font-weight: 400;
+    color: #fff;
+}
 .details-btn
 {
     margin-top: 20px;

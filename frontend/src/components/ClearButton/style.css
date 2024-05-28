@@ -1,0 +1,10 @@
+.__clear-btn {
+  background: transparent !important;
+  border: 2px solid !important;
+  width: 100%;
+  font-size: 20px !important;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

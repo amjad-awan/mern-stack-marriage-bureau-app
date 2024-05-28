@@ -8,14 +8,19 @@ import {
   CardText,
   CardTitle,
 } from "reactstrap";
+import { LuEye } from "react-icons/lu";
+
 import { Buffer } from "buffer";
 import "./style.css";
 import { Link } from "react-router-dom";
 import pic from "../../assets/images/blur.jpg";
 
 import { getPhoto } from "../../ServerRequests/groomRequest";
+import ImageModal from "../ImageModal/ImageModal";
 const GroomCard = ({ data, setPhotoLoading, photoLoading }) => {
   const [photo, setPhoto] = useState({});
+  const [modal, setModal] = useState(false);
+
   const handlePhoto = async () => {
     try {
       const res = await getPhoto("groom/get-single-photo/" + data?._id);
@@ -43,48 +48,52 @@ const GroomCard = ({ data, setPhotoLoading, photoLoading }) => {
     : "";
   if (photoLoading) return "";
   return (
-    <Card
-      style={{
-        //   width: '18rem',
-        marginBottom: "25px",
-        overflow: "hidden",
-      }}
-    >
-      <div className={`groom-img `}>
-        {imageUrl && <img alt="Sample" src={imageUrl} />}
-      </div>
+    <>
+      <Card
+        style={{
+          //   width: '18rem',
+          marginBottom: "25px",
+          overflow: "hidden",
+          width: "100%",
+        }}
+      >
+        <div className={`groom-img `}>
+          {imageUrl && <img alt="Sample" src={imageUrl} />}
+          <div className="__image_overlay" onClick={()=>setModal(true)}>
+            <LuEye className="__open-icon" />
+          </div>
+        </div>
 
-      <CardBody>
-        <CardTitle tag="h5" className="mb-3">
-          Groom info:
-        </CardTitle>
-        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Name: <span className="info"> {data.name}</span>
-        </CardSubtitle>
-        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Age: <span className="info"> {data.age} y</span>
-        </CardSubtitle>
-        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Cast: <span className="info"> {data.cast} </span>
-        </CardSubtitle>
-        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Education:{" "}
-          <span className="info">
-            {data.qualification ? data.qualification : "Not mentioned"}{" "}
-          </span>
-        </CardSubtitle>
-        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          Businnes:{" "}
-          <span className="info">
-            {data.job ? data.job : "Not mentioned"}{" "}
-          </span>
-        </CardSubtitle>
-        <CardSubtitle className=" text-muted text-wrapper" tag="h6">
-          City: <span className="info"> {data.city}</span>
-        </CardSubtitle>
-     
-      
-        {/* {lookingFor === data._id && (
+        <CardBody>
+          <CardTitle tag="h5" className="mb-3">
+            Groom info:
+          </CardTitle>
+          <CardSubtitle className=" text-muted text-wrapper" tag="h6">
+            Name: <span className="info"> {data.name}</span>
+          </CardSubtitle>
+          <CardSubtitle className=" text-muted text-wrapper" tag="h6">
+            Age: <span className="info"> {data.age} y</span>
+          </CardSubtitle>
+          <CardSubtitle className=" text-muted text-wrapper" tag="h6">
+            Cast: <span className="info"> {data.cast} </span>
+          </CardSubtitle>
+          <CardSubtitle className=" text-muted text-wrapper" tag="h6">
+            Education:{" "}
+            <span className="info">
+              {data.qualification ? data.qualification : "Not mentioned"}{" "}
+            </span>
+          </CardSubtitle>
+          <CardSubtitle className=" text-muted text-wrapper" tag="h6">
+            Businnes:{" "}
+            <span className="info">
+              {data.job ? data.job : "Not mentioned"}{" "}
+            </span>
+          </CardSubtitle>
+          <CardSubtitle className=" text-muted text-wrapper" tag="h6">
+            City: <span className="info"> {data.city}</span>
+          </CardSubtitle>
+
+          {/* {lookingFor === data._id && (
           <>
             <p className="looking-for">Looking for</p>
             <CardSubtitle className=" text-muted text-wrapper" tag="h6">
@@ -112,23 +121,26 @@ const GroomCard = ({ data, setPhotoLoading, photoLoading }) => {
           </>
         )} */}
 
-        {/* <Button className='looking-for-btn' color='primary'>
+          {/* <Button className='looking-for-btn' color='primary'>
       
       </Button> */}
-        {/* <span
+          {/* <span
           className="look-for"
           onClick={() => {
             setLookingFor(data._id === lookingFor ? "" : data._id);
           }}
         >
           {lookingFor ? "Hide" : "      Looking for          "} */}
-        {/* </span> */}
-        <Link to={`/${data._id}`} className="details-btn">
-          {" "}
-          details
-        </Link>
-      </CardBody>
-    </Card>
+          {/* </span> */}
+          <Link to={`/${data._id}`} className="details-btn">
+            {" "}
+            details
+          </Link>
+        </CardBody>
+      </Card>
+
+      <ImageModal img={imageUrl} modal={modal} setModal={setModal} />
+    </>
   );
 };
 

@@ -5,6 +5,16 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
 
+
+  useEffect(()=>{
+
+    const authDetails= localStorage.getItem("user")
+    if(authDetails){
+      setAuth(authDetails)
+    }
+
+  },[])
+
   return (
     <AuthContext.Provider
       value={{

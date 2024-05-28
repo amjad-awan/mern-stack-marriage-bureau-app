@@ -19,7 +19,7 @@ const GroomProvider = ({ children }) => {
   const [totalGrooms, setTotalGrooms] = useState(null);
   const [params, setParams] = useState({
     page: page,
-    limit: 5,
+    limit: 12,
     ...urlParams,
   });
   console.log("32", params);

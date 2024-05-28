@@ -12,9 +12,9 @@
 }
 
 .inner-wrapper{
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0px auto;
-    padding: 0px 20px;
+    /* padding: 0px 20px; */
     min-height: 100vh;
 }
 
@@ -32,4 +32,8 @@
     margin: 0 !important;
     color: #fff;
     font-weight: 300;
+}
+.accordion-body, .accordion-button
+{
+  padding: 20px 12px !important;
 }

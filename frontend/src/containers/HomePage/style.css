@@ -1,10 +1,56 @@
 .pagination-home{
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 20px;
     align-items: center;
 }
 .pagination-home p{
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 300;
+    margin: 0 !important;
 }
+
+.__home-page-filters-cards{
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+._home-filters{
+    max-width: 260px;
+    background-color: rgb(203, 214, 214);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.search-bar{
+    width: 100%;
+}
+
+.search-on-desktop{
+    width: 100%;  
+}
+.__filter-icon
+{
+    font-size: 30px;
+    font-weight: 500;
+}
+@media only screen and (max-width:768px) {
+    ._home-filters{
+        display: none;
+
+    }
+    
+}
+
+.__filter-accord{
+    margin-bottom: 50px;
+}
+
+@media only screen and (min-width:768px) {
+    .__filter-accord{
+        display: none;
+    } 
+}
+

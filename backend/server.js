@@ -26,7 +26,6 @@ app.use(cors({
   credentials: true
 }))
 app.use(express.json());
-
 app.use(bodyParser.json({limit: '50000000', extended: true}));
 app.use(bodyParser.urlencoded({imit: '50000000', extended: true}));
 app.use(bodyParser.text({ imit: '50000000' }));
@@ -34,7 +33,6 @@ app.use(compression({
   threshold: 1024, // compress all responses larger than 1 KB
   level: 6, // use compression level 6 (balanced between speed and compression ratio)
 }));
-
 // Define routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/groom", groomRoute);

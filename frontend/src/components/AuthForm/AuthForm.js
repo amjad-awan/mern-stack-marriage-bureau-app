@@ -55,7 +55,7 @@ const AuthForm = () => {
         console.log("res55",res)
 
         if (res && res.data && res.data.success) {
-          setAuth(res.data)
+          setAuth(res.data.user)
           setVisible(false);
           localStorage.setItem("user", JSON.stringify(res.data.user) )
           navigate("/");

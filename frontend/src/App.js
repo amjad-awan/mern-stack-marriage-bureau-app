@@ -3,6 +3,7 @@ import "./App.css";
 import AppRoutes from "./AppRoutes/Routes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Animation from "./components/Animation/Animation";
 
 function App() {
   return (
@@ -25,8 +26,9 @@ function App() {
         />
         {/* Same as */}
         <ToastContainer />
+     
            <div className="footer">
-            <p> @ Copy right reserved by zubair marriage center | <a target="_blank" href="https://www.upwork.com/freelancers/~01fe666696114ee1da">developed by amjad mehmood</a>  </p>
+            <p> @ Copy rigth reserved by zubair marriage beuro | <a target="_blank" href="https://www.upwork.com/freelancers/~01fe666696114ee1da">developed by amjad mehmood</a>  </p>
            </div>
 
       </div>
